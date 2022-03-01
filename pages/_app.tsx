@@ -1,8 +1,14 @@
-import '../styles/globals.css'
-import type { AppProps } from 'next/app'
+import "../styles/globals.css"
+import type { AppProps } from "next/app"
+import { optiqClient } from "../lib/clients/optiq.client"
+import { ApolloProvider } from "@apollo/client"
 
-function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+function App({ Component, pageProps }: AppProps) {
+  return (
+    <ApolloProvider client={optiqClient}>
+      <Component {...pageProps} />
+    </ApolloProvider>
+  )
 }
 
-export default MyApp
+export default App

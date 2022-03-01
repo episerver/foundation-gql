@@ -1,0 +1,62 @@
+query Locations(
+  $locale: [Locale] = [en]
+  $language: String = "en"
+  $continents: [String] = []
+  $countries: [String] = []
+  $minAvgTemp: Float = -100
+  $maxAvgTemp: Float = 100
+  $fullTextSearch: String = ""
+) {
+  LocationListPage(locale: $locale, where: { Language: { Name: { eq: $language } } }) {
+    items {
+      Name
+      MainBody
+      _children {
+        LocationItemPage(
+          locale: $locale
+          where: {
+            Language: { Name: { eq: $language } }
+            AvgTemp: { gte: $minAvgTemp, lte: $maxAvgTemp }
+            Country: { in: $countries }
+            Continent: { in: $continents }
+            _fulltext: { contains: $fullTextSearch }
+          }
+        ) {
+          items {
+            Location: Name
+            Country
+            Continent
+            AvgTemp
+            Longitude
+            Latitude
+            IntroText: MainIntro
+            ContentLink {
+              GuidValue
+            }
+          }
+          facets {
+            Country(orderType: VALUE) {
+              name
+              count
+            }
+            Continent(orderType: VALUE) {
+              name
+              count
+            }
+            AvgTemp(
+              ranges: [
+                { from: -100, to: 10 }
+                { from: 11, to: 20 }
+                { from: 21, to: 30 }
+                { from: 31, to: 100 }
+              ]
+            ) {
+              name
+              count
+            }
+          }
+        }
+      }
+    }
+  }
+}
