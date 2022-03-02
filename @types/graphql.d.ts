@@ -16,3 +16,11 @@ type FacetItem = {
   name: string
   count: number
 }
+
+type Content<T> = {
+  items: T[]
+}
+
+type Facet<T extends { [k: string]: FacetItem[] }> = {
+  facets: T
+}
