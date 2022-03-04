@@ -1,4 +1,4 @@
-query Locations(
+query LocationListQuery(
   $locale: [Locale] = [en]
   $language: String = "en"
   $continents: [String] = []
@@ -26,6 +26,7 @@ query Locations(
             Location: Name
             Country
             Continent
+            Created
             AvgTemp
             Longitude
             Latitude
@@ -35,15 +36,15 @@ query Locations(
             }
           }
           facets {
-            Country(orderType: VALUE) {
+            Country(orderType: VALUE, orderBy: ASC, limit: 100) {
               name
               count
             }
-            Continent(orderType: VALUE) {
+            Continent(orderType: VALUE, orderBy: ASC) {
               name
               count
             }
-            AvgTemp(
+            AverageTemperature: AvgTemp(
               ranges: [
                 { from: -100, to: 10 }
                 { from: 11, to: 20 }

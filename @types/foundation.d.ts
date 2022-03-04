@@ -1,8 +1,9 @@
-type LocationItems = {
+type LocationItem = {
   AvgTemp: number
   ContentLink: { GuidValue: string }
   Continent: string
   Country: string
+  Created: string
   IntroText: string
   Latitude: number
   Location: string
@@ -10,17 +11,20 @@ type LocationItems = {
 }
 
 type LocationFacets = {
-  AvgTemp: FacetItem[]
+  AverageTemperature: FacetItem[]
   Continent: FacetItem[]
   Country: FacetItem[]
 }
 
-type Locations = {
-  LocationListPage: Content<{
-    MainBody: string
-    Name: string
-    _children: {
-      LocationItemPage: Content<LocationItems> & Facet<LocationFacets>
-    }
-  }>
+type LocationListParams = {
+  countries: string[]
+  continents: string[]
 }
+
+type LocationListPage = Content<{
+  MainBody: string
+  Name: string
+  _children: {
+    LocationItemPage: Content<LocationItem> & Facet<LocationFacets>
+  }
+}>

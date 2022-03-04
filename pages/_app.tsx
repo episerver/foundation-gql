@@ -1,14 +1,18 @@
-import "../styles/globals.css"
-import type { AppProps } from "next/app"
-import { optiqClient } from "../lib/clients/optiq.client"
 import { ApolloProvider } from "@apollo/client"
+import { ChakraProvider } from "@chakra-ui/react"
+import type { AppProps } from "next/app"
 
-function App({ Component, pageProps }: AppProps) {
+import { optiqClient } from "lib/clients/optiq.client"
+import { theme } from "styles/theme"
+
+const _App = ({ Component, pageProps }: AppProps) => {
   return (
-    <ApolloProvider client={optiqClient}>
-      <Component {...pageProps} />
-    </ApolloProvider>
+    <ChakraProvider theme={theme}>
+      <ApolloProvider client={optiqClient}>
+        <Component {...pageProps} />
+      </ApolloProvider>
+    </ChakraProvider>
   )
 }
 
-export default App
+export default _App

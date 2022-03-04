@@ -28,7 +28,9 @@ class OptiqClient extends ApolloClient<NormalizedCacheObject> {
 
     super({
       link: from([authMiddleware, httpLink]),
-      cache: new InMemoryCache(),
+      cache: new InMemoryCache({
+        addTypename: false,
+      }),
     })
   }
 }
