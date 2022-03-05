@@ -1,21 +1,20 @@
+#import "./Fragments.gql"
+
 query LocationListQuery(
   $locale: [Locale] = [en]
-  $language: String = "en"
   $continents: [String] = []
   $countries: [String] = []
   $minAvgTemp: Float = -100
   $maxAvgTemp: Float = 100
   $fullTextSearch: String = ""
 ) {
-  LocationListPage(locale: $locale, where: { Language: { Name: { eq: $language } } }) {
+  LocationListPage(locale: $locale) {
     items {
       Name
       MainBody
       _children {
         LocationItemPage(
-          locale: $locale
           where: {
-            Language: { Name: { eq: $language } }
             AvgTemp: { gte: $minAvgTemp, lte: $maxAvgTemp }
             Country: { in: $countries }
             Continent: { in: $continents }
@@ -23,17 +22,7 @@ query LocationListQuery(
           }
         ) {
           items {
-            Location: Name
-            Country
-            Continent
-            Created
-            AvgTemp
-            Longitude
-            Latitude
-            IntroText: MainIntro
-            ContentLink {
-              GuidValue
-            }
+            ...LocationItemFragment
           }
           facets {
             Country(orderType: VALUE, orderBy: ASC, limit: 100) {

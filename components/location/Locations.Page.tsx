@@ -13,25 +13,14 @@ type QueryResult = {
 }
 
 export const LocationsPage: React.FC = () => {
-  const [countries, setCountries] = useState<string[]>([])
-  const [continents, setContinents] = useState<string[]>([])
+  const params = useState<LocationListParams>()
 
   const { data, loading } = useQuery<QueryResult, LocationListParams>(LocationListQuery, {
-    variables: {
-      countries,
-      continents,
-    },
+    variables: params[0],
   })
 
   return (
-    <LocationContext.Provider
-      value={{
-        continents,
-        countries,
-        setContinents,
-        setCountries,
-      }}
-    >
+    <LocationContext.Provider value={{ params }}>
       <Center>
         {loading && <p>loading..</p>}
         {data && (
@@ -39,7 +28,9 @@ export const LocationsPage: React.FC = () => {
             <LocationFilter
               facets={data.LocationListPage.items[0]._children.LocationItemPage.facets}
             />
-            <LocationList items={data.LocationListPage.items[0]._children.LocationItemPage.items} />
+            <LocationList //
+              items={data.LocationListPage.items[0]._children.LocationItemPage.items}
+            />
           </>
         )}
       </Center>

@@ -6,6 +6,7 @@ import {
   InMemoryCache,
   NormalizedCacheObject,
 } from "@apollo/client"
+import { onError } from "@apollo/client/link/error"
 
 class OptiqClient extends ApolloClient<NormalizedCacheObject> {
   constructor(url?: string, auth?: string) {
@@ -13,7 +14,14 @@ class OptiqClient extends ApolloClient<NormalizedCacheObject> {
     if (!auth) throw new Error("auth is required")
 
     const httpLink = new HttpLink({
-      uri: `${url}/content/v2?auth=${auth}`,
+      uri: `${url}/content/v2`,
+    })
+
+    const errorLink = onError(({ graphQLErrors, networkError }) => {
+      if (process.env.NODE_ENV !== "production") {
+        graphQLErrors?.forEach(console.error)
+        networkError && console.error(networkError)
+      }
     })
 
     const authMiddleware = new ApolloLink((operation, forward) => {
@@ -27,10 +35,8 @@ class OptiqClient extends ApolloClient<NormalizedCacheObject> {
     })
 
     super({
-      link: from([authMiddleware, httpLink]),
-      cache: new InMemoryCache({
-        addTypename: false,
-      }),
+      link: from([errorLink, authMiddleware, httpLink]),
+      cache: new InMemoryCache(),
     })
   }
 }

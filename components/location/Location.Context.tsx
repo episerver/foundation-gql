@@ -1,8 +1,7 @@
 import { createContext } from "react"
 
-type LocationContextProps = LocationListParams & {
-  setCountries: (countries: string[]) => void
-  setContinents: (continents: string[]) => void
+type LocationContextProps = {
+  params: State<LocationListParams>
 }
 
 export const LocationContext = createContext<Partial<LocationContextProps>>({})

@@ -211,7 +211,7 @@ export const NavBar: React.FC = () => {
   const { isOpen, onToggle } = useDisclosure()
 
   return (
-    <Box>
+    <Box pos={"sticky"} top={0} zIndex={999}>
       <Flex
         bg={useColorModeValue("white", "gray.800")}
         color={useColorModeValue("gray.600", "white")}

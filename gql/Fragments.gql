@@ -1,0 +1,13 @@
+fragment LocationItemFragment on LocationItemPage {
+  Location: Name
+  Country
+  Continent
+  Created
+  AvgTemp
+  Longitude
+  Latitude
+  IntroText: MainIntro
+  ContentLink {
+    GuidValue
+  }
+}

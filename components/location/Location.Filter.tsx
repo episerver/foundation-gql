@@ -54,8 +54,10 @@ const Filter: React.FC<FilterProps> = ({ title, values, selection, setSelection 
 }
 
 export const LocationFilter: React.FC<Facet<LocationFacets>> = ({ facets }) => {
-  const { continents, countries, setContinents, setCountries } = useContext(LocationContext)
+  const { params: [params, setParams] = [, () => {}] } = useContext(LocationContext)
+  const { continents, countries } = params || {}
   const defaultIndex = []
+
   if (countries?.length) defaultIndex.push(0)
   if (continents?.length) defaultIndex.push(1)
   if (!defaultIndex.length) defaultIndex.push(0)
@@ -73,13 +75,13 @@ export const LocationFilter: React.FC<Facet<LocationFacets>> = ({ facets }) => {
           title="Country"
           values={facets.Country}
           selection={countries || []}
-          setSelection={setCountries || (() => {})}
+          setSelection={(countries) => setParams({ ...params, countries })}
         />
         <Filter
           title="Continent"
           values={facets.Continent}
           selection={continents || []}
-          setSelection={setContinents || (() => {})}
+          setSelection={(continents) => setParams({ ...params, continents })}
         />
       </Accordion>
     </VStack>
