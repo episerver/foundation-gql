@@ -1,0 +1,21 @@
+query LayoutQuery {
+  HomePage(locale: en, where: { Name: { eq: "Epi Health" } }) {
+    items {
+      Name
+      RouteSegment
+      ContentType
+      _children {
+        Content {
+          items {
+            Name
+            ContentType
+            RouteSegment
+            ContentLink {
+              GuidValue
+            }
+          }
+        }
+      }
+    }
+  }
+}

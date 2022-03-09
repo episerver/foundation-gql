@@ -1,0 +1,22 @@
+query HomePageQuery {
+  HomePage(locale: en, where: { Name: { eq: "Epi Health" } }) {
+    items {
+      Name
+      ContentLink {
+        GuidValue
+      }
+      MainBody
+      MainContentArea {
+        ContentLink {
+          Expanded {
+            Name
+            ContentType
+            ContentLink {
+              GuidValue
+            }
+          }
+        }
+      }
+    }
+  }
+}

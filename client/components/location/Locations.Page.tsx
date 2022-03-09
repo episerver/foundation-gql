@@ -1,4 +1,3 @@
-import { useQuery } from "@apollo/client"
 import { Center } from "@chakra-ui/react"
 import { useState } from "react"
 
@@ -6,23 +5,22 @@ import { LocationContext } from "./Location.Context"
 import { LocationFilter } from "./Location.Filter"
 import { LocationList } from "./Location.List"
 
+import { useOptiQuery } from "client/hooks/useOptiQuery"
 import LocationListQuery from "gql/LocationListQuery.gql"
 
-type QueryResult = {
+type LocationListQueryResult = {
   LocationListPage: LocationListPage
 }
 
 export const LocationsPage: React.FC = () => {
-  const params = useState<LocationListParams>()
-
-  const { data, loading } = useQuery<QueryResult, LocationListParams>(LocationListQuery, {
-    variables: params[0],
+  const [params, setParams] = useState<LocationListParams>()
+  const { data } = useOptiQuery<LocationListQueryResult, LocationListParams>(LocationListQuery, {
+    variables: params,
   })
 
   return (
-    <LocationContext.Provider value={{ params }}>
+    <LocationContext.Provider value={{ params: [params, setParams] }}>
       <Center>
-        {loading && <p>loading..</p>}
         {data && (
           <>
             <LocationFilter

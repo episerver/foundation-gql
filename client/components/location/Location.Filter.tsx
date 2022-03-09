@@ -53,8 +53,10 @@ const Filter: React.FC<FilterProps> = ({ title, values, selection, setSelection 
   )
 }
 
-export const LocationFilter: React.FC<Facet<LocationFacets>> = ({ facets }) => {
-  const { params: [params, setParams] = [, () => {}] } = useContext(LocationContext)
+export const LocationFilter: React.FC<Facets<LocationFacets>> = ({ facets }) => {
+  const {
+    params: [params, setParams],
+  } = useContext(LocationContext)
   const { continents, countries } = params || {}
   const defaultIndex = []
 

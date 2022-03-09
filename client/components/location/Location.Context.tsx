@@ -4,4 +4,6 @@ type LocationContextProps = {
   params: State<LocationListParams>
 }
 
-export const LocationContext = createContext<Partial<LocationContextProps>>({})
+export const LocationContext = createContext<LocationContextProps>({
+  params: [undefined, () => {}],
+})
