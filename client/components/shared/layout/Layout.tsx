@@ -2,7 +2,7 @@ import { useQuery } from "@apollo/client"
 import { Progress } from "@chakra-ui/react"
 import Error from "next/error"
 import Head from "next/head"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import { Navbar, NavItem } from "./Navbar"
 
@@ -50,9 +50,7 @@ export const Layout: React.FC = () => {
       )
     }
 
-    if (!path) {
-      router.push(home.href!)
-    }
+    router.push(home.href!)
   }
 
   return null
