@@ -1,6 +1,6 @@
 import { VStack, StackDivider, Flex } from "@chakra-ui/react"
 
-import { useOptiQuery } from "client/hooks/useOptiQuery"
+import { useQuery } from "client/hooks/optimizely/useQuery"
 import HomePageQuery from "gql/HomePageQuery.gql"
 
 type HomePageItem = {
@@ -11,8 +11,8 @@ type HomePageQueryResult = {
   HomePage: Items<HomePageItem>
 }
 
-export const HomePage: React.FC = () => {
-  const { data } = useOptiQuery<HomePageQueryResult>(HomePageQuery)
+export default function HomePage() {
+  const { data } = useQuery<HomePageQueryResult>(HomePageQuery)
 
   return (
     <VStack divider={<StackDivider borderColor="gray.200" />} spacing={4} align="stretch">

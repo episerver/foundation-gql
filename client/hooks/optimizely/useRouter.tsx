@@ -1,7 +1,7 @@
-import { useRouter } from "next/router"
+import { useRouter as useNextRouter } from "next/router"
 
-export const useOptiRouter = () => {
-  const router = useRouter()
+export const useRouter = () => {
+  const router = useNextRouter()
   const page = router.query.page as string[]
   const [...fragments] = page || []
 

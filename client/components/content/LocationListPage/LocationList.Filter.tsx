@@ -16,7 +16,7 @@ import {
 } from "@chakra-ui/react"
 import { useContext } from "react"
 
-import { LocationContext } from "./Location.Context"
+import { LocationListContext } from "./LocationList.Context"
 
 type FilterProps = {
   title: string
@@ -53,10 +53,10 @@ const Filter: React.FC<FilterProps> = ({ title, values, selection, setSelection 
   )
 }
 
-export const LocationFilter: React.FC<Facets<LocationFacets>> = ({ facets }) => {
+export const LocationListFilter: React.FC<Facets<LocationFacets>> = ({ facets }) => {
   const {
     params: [params, setParams],
-  } = useContext(LocationContext)
+  } = useContext(LocationListContext)
   const { continents, countries } = params || {}
   const defaultIndex = []
 
