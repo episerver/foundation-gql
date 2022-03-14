@@ -1,8 +1,9 @@
 import { useQuery } from "@apollo/client"
 import { Progress } from "@chakra-ui/react"
-import Error from "next/error"
 import Head from "next/head"
-import { lazy, Suspense, useState } from "react"
+import { useState } from "react"
+
+import { DynamicContent } from "../DynamicContent"
 
 import { Navbar, NavItem } from "./Navbar"
 
@@ -34,12 +35,6 @@ export const Layout: React.FC = () => {
     const route = [home, ...items].find((x) => x.href === path)
 
     if (route) {
-      const Content = lazy(() =>
-        import(`client/components/content/${route.contentType}`).catch(() => ({
-          default: () => <Error statusCode={404}></Error>,
-        }))
-      )
-
       return (
         <LayoutContext.Provider value={{ loading: [loading, setLoading] }}>
           <Head>
@@ -48,10 +43,7 @@ export const Layout: React.FC = () => {
 
           <Navbar home={home} items={items} />
           {loading && <Progress size="xs" colorScheme={"yellow"} isIndeterminate />}
-
-          <Suspense fallback={<></>}>
-            <Content />
-          </Suspense>
+          <DynamicContent contentType={route.contentType} />
 
           {/* <Footer /> */}
         </LayoutContext.Provider>

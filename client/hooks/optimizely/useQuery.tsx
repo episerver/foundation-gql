@@ -14,7 +14,7 @@ export const useQuery: UseQueryHook = (query, variables) => {
 
   useEffect(() => {
     setLoading(result.loading)
-  }, [result.loading, setLoading])
+  }, [setLoading, result])
 
   return result
 }
