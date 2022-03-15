@@ -1,68 +1,20 @@
-import {
-  VStack,
-  StackDivider,
-  Box,
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
-  Checkbox,
-  Text,
-  Flex,
-  Spacer,
-  Stack,
-  CheckboxGroup,
-} from "@chakra-ui/react"
+import { VStack, StackDivider, Accordion } from "@chakra-ui/react"
 import { useContext } from "react"
 
 import { LocationListContext } from "./LocationList.Context"
 
-type FilterProps = {
-  title: string
-  values: FacetItem[]
-  selection: string[]
-  setSelection: (selection: string[]) => void
+import { Filter } from "client/components/shared/Filter"
+
+type LocationListFilterProps = {
+  facets?: LocationFacets
 }
 
-const Filter: React.FC<FilterProps> = ({ title, values, selection, setSelection }) => {
-  return (
-    <AccordionItem>
-      <AccordionButton>
-        <Box flex="1" textAlign="left">
-          <Text fontSize={"lg"}>{title}</Text>
-        </Box>
-        <AccordionIcon />
-      </AccordionButton>
-      <AccordionPanel pb={4}>
-        <CheckboxGroup defaultValue={selection} onChange={setSelection}>
-          <Stack spacing={4}>
-            {values.map((item) => (
-              <Checkbox key={item.name} value={item.name} size={"sm"} spacing="1rem">
-                <Flex direction={"row"}>
-                  <Text fontSize={"sm"}>{item.name}</Text>
-                  <Spacer />
-                  <Text fontSize={"sm"}>{item.count}</Text>
-                </Flex>
-              </Checkbox>
-            ))}
-          </Stack>
-        </CheckboxGroup>
-      </AccordionPanel>
-    </AccordionItem>
-  )
-}
-
-export const LocationListFilter: React.FC<Facets<LocationFacets>> = ({ facets }) => {
+export const LocationListFilter: React.FC<LocationListFilterProps> = ({ facets }) => {
   const {
     params: [params, setParams],
   } = useContext(LocationListContext)
-  const { continents, countries } = params || {}
-  const defaultIndex = []
-
-  if (countries?.length) defaultIndex.push(0)
-  if (continents?.length) defaultIndex.push(1)
-  if (!defaultIndex.length) defaultIndex.push(0)
+  const { continents, countries, minAvgTemp, maxAvgTemp } = params || {}
+  const defaultIndex = [1, 2]
 
   return (
     <VStack
@@ -73,18 +25,43 @@ export const LocationListFilter: React.FC<Facets<LocationFacets>> = ({ facets })
       width={"300px"}
     >
       <Accordion defaultIndex={defaultIndex} allowMultiple>
-        <Filter
-          title="Country"
-          values={facets.Country}
-          selection={countries || []}
-          setSelection={(countries) => setParams({ ...params, countries })}
-        />
-        <Filter
-          title="Continent"
-          values={facets.Continent}
-          selection={continents || []}
-          setSelection={(continents) => setParams({ ...params, continents })}
-        />
+        {facets?.Country && (
+          <Filter
+            type="select"
+            title="Country"
+            buckets={facets?.Country}
+            values={countries || []}
+            setValues={(countries) => setParams({ ...params, countries })}
+          />
+        )}
+
+        {facets?.Continent && (
+          <Filter
+            type="select"
+            title="Continent"
+            buckets={facets?.Continent}
+            values={continents || []}
+            setValues={(continents) => setParams({ ...params, continents })}
+          />
+        )}
+
+        {facets?.AverageTemperature && (
+          <Filter
+            type="range"
+            title="Average Temperature"
+            min={-50}
+            max={50}
+            buckets={facets?.AverageTemperature}
+            values={[minAvgTemp, maxAvgTemp]}
+            setValues={([minAvgTemp, maxAvgTemp]) =>
+              setParams({
+                ...params,
+                minAvgTemp,
+                maxAvgTemp,
+              })
+            }
+          />
+        )}
       </Accordion>
     </VStack>
   )

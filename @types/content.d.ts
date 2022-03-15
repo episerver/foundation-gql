@@ -36,14 +36,16 @@ type LocationItem = {
 }
 
 type LocationFacets = {
-  AverageTemperature: FacetItem[]
-  Continent: FacetItem[]
-  Country: FacetItem[]
+  AverageTemperature: Bucket[]
+  Continent: Bucket[]
+  Country: Bucket[]
 }
 
 type LocationListParams = {
   countries: string[]
   continents: string[]
+  minAvgTemp: number
+  maxAvgTemp: number
 }
 
 type LocationListPageItem = {

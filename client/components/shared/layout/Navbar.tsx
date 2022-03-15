@@ -20,6 +20,7 @@ import { NextLink } from "../NextLink"
 
 export type NavItem = {
   label: string
+  active?: boolean
   subLabel?: string
   children?: Array<NavItem>
   href?: string
@@ -52,6 +53,8 @@ const DesktopNav: React.FC<NavbarProps> = ({ items }) => {
                   textDecoration: "none",
                   color: linkHoverColor,
                 }}
+                bg={navItem.active ? "gray.200" : "transparent"}
+                borderRadius={4}
               >
                 {navItem.label}
               </NextLink>

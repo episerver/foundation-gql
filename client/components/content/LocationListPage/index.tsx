@@ -1,5 +1,5 @@
 import { Center } from "@chakra-ui/react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import { LocationListContainer } from "./LocationList.Container"
 import { LocationListContext } from "./LocationList.Context"
@@ -13,24 +13,26 @@ type LocationListQueryResult = {
 }
 
 export default function LocationListPage() {
+  const [items, setItems] = useState<LocationItem[]>([])
+  const [facets, setFacets] = useState<LocationFacets>()
   const [params, setParams] = useState<LocationListParams>()
+
   const { data } = useQuery<LocationListQueryResult, LocationListParams>(LocationListQuery, {
     variables: params,
   })
 
+  useEffect(() => {
+    setItems(data?.LocationListPage.items[0]._children.LocationItemPage.items || [])
+    if (!facets) {
+      setFacets(data?.LocationListPage.items[0]._children.LocationItemPage.facets)
+    }
+  }, [data])
+
   return (
     <LocationListContext.Provider value={{ params: [params, setParams] }}>
       <Center>
-        {data && (
-          <>
-            <LocationListFilter
-              facets={data.LocationListPage.items[0]._children.LocationItemPage.facets}
-            />
-            <LocationListContainer //
-              items={data.LocationListPage.items[0]._children.LocationItemPage.items}
-            />
-          </>
-        )}
+        <LocationListFilter {...{ facets }} />
+        <LocationListContainer {...{ items }} />
       </Center>
     </LocationListContext.Provider>
   )

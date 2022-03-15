@@ -12,7 +12,7 @@ declare module "*.gql" {
   export = Schema
 }
 
-type FacetItem = {
+type Bucket = {
   name: string
   count: number
 }
@@ -21,7 +21,7 @@ type Items<T> = {
   items: T[]
 }
 
-type Facets<T extends { [k: string]: FacetItem[] }> = {
+type Facets<T extends { [k: string]: Bucket[] }> = {
   facets: T
 }
 
