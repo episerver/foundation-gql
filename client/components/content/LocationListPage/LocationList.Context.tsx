@@ -1,9 +1,13 @@
 import { createContext } from "react"
 
 type LocationContextProps = {
-  params: State<LocationListParams>
+  items: LocationItem[]
+  facets: Partial<LocationFacets>
+  filters: State<Partial<LocationFilter>>
 }
 
 export const LocationListContext = createContext<LocationContextProps>({
-  params: [undefined, () => {}],
+  items: [],
+  facets: {},
+  filters: [{}, () => {}],
 })

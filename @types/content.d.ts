@@ -41,7 +41,7 @@ type LocationFacets = {
   Country: Bucket[]
 }
 
-type LocationListParams = {
+type LocationFilter = {
   countries: string[]
   continents: string[]
   minAvgTemp: number

@@ -1,68 +1,74 @@
-import { VStack, StackDivider, Accordion } from "@chakra-ui/react"
+import { HStack, Tag, TagCloseButton, TagLabel } from "@chakra-ui/react"
 import { useContext } from "react"
 
 import { LocationListContext } from "./LocationList.Context"
 
-import { Filter } from "client/components/shared/Filter"
+import { useLayout } from "client/hooks/optimizely/useLayout"
 
-type LocationListFilterProps = {
-  facets?: LocationFacets
+type FilterTag = {
+  display: string
+  onRemove: Function
 }
 
-export const LocationListFilter: React.FC<LocationListFilterProps> = ({ facets }) => {
-  const {
-    params: [params, setParams],
-  } = useContext(LocationListContext)
-  const { continents, countries, minAvgTemp, maxAvgTemp } = params || {}
-  const defaultIndex = [1, 2]
-
+const FilterTag: React.FC<FilterTag> = ({ display, onRemove }) => {
   return (
-    <VStack
-      divider={<StackDivider borderColor="gray.200" />}
-      spacing={4}
-      align={"stretch"}
-      alignSelf={"start"}
-      width={"300px"}
-    >
-      <Accordion defaultIndex={defaultIndex} allowMultiple>
-        {facets?.Country && (
-          <Filter
-            type="select"
-            title="Country"
-            buckets={facets?.Country}
-            values={countries || []}
-            setValues={(countries) => setParams({ ...params, countries })}
-          />
-        )}
-
-        {facets?.Continent && (
-          <Filter
-            type="select"
-            title="Continent"
-            buckets={facets?.Continent}
-            values={continents || []}
-            setValues={(continents) => setParams({ ...params, continents })}
-          />
-        )}
-
-        {facets?.AverageTemperature && (
-          <Filter
-            type="range"
-            title="Average Temperature"
-            min={-50}
-            max={50}
-            buckets={facets?.AverageTemperature}
-            values={[minAvgTemp, maxAvgTemp]}
-            setValues={([minAvgTemp, maxAvgTemp]) =>
-              setParams({
-                ...params,
-                minAvgTemp,
-                maxAvgTemp,
-              })
-            }
-          />
-        )}
-      </Accordion>
-    </VStack>
+    <Tag size={"lg"} variant="subtle" colorScheme="blue">
+      <TagLabel>{display}</TagLabel>
+      <TagCloseButton onClick={() => onRemove()} />
+    </Tag>
   )
+}
+
+export const LocationListFilter: React.FC = () => {
+  const {
+    loading: [loading],
+  } = useLayout()
+
+  const {
+    filters: [filters, setFilters],
+  } = useContext(LocationListContext)
+
+  return !loading && filters && Object.keys(filters).length ? (
+    <HStack alignSelf={"start"} mx={35} mt={25}>
+      {filters.continents?.map((val, index) => (
+        <FilterTag
+          key={index}
+          display={val}
+          onRemove={() => {
+            const { continents: oldContinents, ...newFilters } = filters
+            const continents = oldContinents?.filter((x) => x !== val)
+            setFilters({
+              ...newFilters,
+              ...(continents?.length ? { continents } : undefined),
+            })
+          }}
+        />
+      ))}
+
+      {filters.countries?.map((val, index) => (
+        <FilterTag
+          key={index}
+          display={val}
+          onRemove={() => {
+            const { countries: oldCountries, ...newFilters } = filters
+            const countries = oldCountries?.filter((x) => x !== val)
+            setFilters({
+              ...newFilters,
+              ...(countries?.length ? { countries } : undefined),
+            })
+          }}
+        />
+      ))}
+
+      {(filters.minAvgTemp !== undefined || filters.maxAvgTemp !== undefined) && (
+        <FilterTag
+          display={`${filters.minAvgTemp} °C ... ${filters.maxAvgTemp || ""} °C`}
+          onRemove={() => {
+            const { minAvgTemp, maxAvgTemp, ...newFilters } = filters
+            setFilters({ ...newFilters })
+          }}
+        />
+      )}
+    </HStack>
+  ) : null
 }

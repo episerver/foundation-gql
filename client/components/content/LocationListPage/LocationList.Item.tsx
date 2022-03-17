@@ -1,4 +1,17 @@
-import { Box, Center, Heading, Text, Stack, Avatar, useColorModeValue } from "@chakra-ui/react"
+import { SunIcon } from "@chakra-ui/icons"
+import {
+  Box,
+  Center,
+  Heading,
+  Text,
+  Stack,
+  Avatar,
+  useColorModeValue,
+  Flex,
+  Tag,
+  TagLabel,
+  TagLeftIcon,
+} from "@chakra-ui/react"
 import Image from "next/image"
 
 export const LocationListItem: React.FC<LocationItem> = ({
@@ -37,15 +50,35 @@ export const LocationListItem: React.FC<LocationItem> = ({
           />
         </Box>
         <Stack>
-          <Text
-            color={"green.500"}
-            textTransform={"uppercase"}
-            fontWeight={800}
-            fontSize={"sm"}
-            letterSpacing={1.1}
-          >
-            {Country}
-          </Text>
+          <Flex justify={"space-between"}>
+            <Flex>
+              <Text
+                color={"green.500"}
+                textTransform={"uppercase"}
+                fontWeight={800}
+                fontSize={"sm"}
+                letterSpacing={1.1}
+              >
+                {Country}
+              </Text>
+              <Text color={"blackAlpha.400"} ml={2} mr={1}>
+                |
+              </Text>
+              <Text
+                color={"green.500"}
+                textTransform={"uppercase"}
+                fontWeight={300}
+                fontSize={"sm"}
+                letterSpacing={1.1}
+              >
+                {Continent}
+              </Text>
+            </Flex>
+            <Tag size={"sm"} variant="subtle" colorScheme="pink">
+              <TagLeftIcon as={SunIcon} />
+              <TagLabel>{AvgTemp + " °C"}</TagLabel>
+            </Tag>
+          </Flex>
           <Heading
             color={useColorModeValue("gray.700", "white")}
             fontSize={"2xl"}

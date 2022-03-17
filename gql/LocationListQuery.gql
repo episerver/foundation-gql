@@ -4,8 +4,8 @@ query LocationListQuery(
   $locale: [Locale] = [en]
   $continents: [String] = []
   $countries: [String] = []
-  $minAvgTemp: Float = -100
-  $maxAvgTemp: Float = 100
+  $minAvgTemp: Float = -50
+  $maxAvgTemp: Float = 50
   $fullTextSearch: String = ""
 ) {
   LocationListPage(locale: $locale) {
@@ -35,10 +35,15 @@ query LocationListQuery(
             }
             AverageTemperature: AvgTemp(
               ranges: [
-                { from: -100, to: 10 }
-                { from: 11, to: 20 }
-                { from: 21, to: 30 }
-                { from: 31, to: 100 }
+                { from: -50, to: -40 }
+                { from: -40, to: -30 }
+                { from: -30, to: -20 }
+                { from: -20, to: -10 }
+                { from: -10, to: 0 }
+                { from: 0, to: 10 }
+                { from: 20, to: 30 }
+                { from: 30, to: 40 }
+                { from: 40, to: 50 }
               ]
             ) {
               name

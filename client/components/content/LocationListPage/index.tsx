@@ -1,9 +1,11 @@
-import { Center } from "@chakra-ui/react"
+import { HStack, VStack } from "@chakra-ui/react"
 import { useEffect, useState } from "react"
 
 import { LocationListContainer } from "./LocationList.Container"
 import { LocationListContext } from "./LocationList.Context"
+import { LocationListFacet } from "./LocationList.Facet"
 import { LocationListFilter } from "./LocationList.Filter"
+import { LocationListHeader } from "./LocationList.Header"
 
 import { useQuery } from "client/hooks/optimizely/useQuery"
 import LocationListQuery from "gql/LocationListQuery.gql"
@@ -14,26 +16,30 @@ type LocationListQueryResult = {
 
 export default function LocationListPage() {
   const [items, setItems] = useState<LocationItem[]>([])
-  const [facets, setFacets] = useState<LocationFacets>()
-  const [params, setParams] = useState<LocationListParams>()
+  const [facets, setFacets] = useState<Partial<LocationFacets>>({})
+  const [filters, setFilters] = useState<Partial<LocationFilter>>({})
 
-  const { data } = useQuery<LocationListQueryResult, LocationListParams>(LocationListQuery, {
-    variables: params,
+  const { data } = useQuery<LocationListQueryResult>(LocationListQuery, {
+    variables: filters,
   })
 
   useEffect(() => {
-    setItems(data?.LocationListPage.items[0]._children.LocationItemPage.items || [])
-    if (!facets) {
-      setFacets(data?.LocationListPage.items[0]._children.LocationItemPage.facets)
-    }
+    const { facets, items } = data?.LocationListPage.items[0]._children.LocationItemPage || {}
+    setItems(items || [])
+    setFacets(facets || {})
   }, [data])
 
   return (
-    <LocationListContext.Provider value={{ params: [params, setParams] }}>
-      <Center>
-        <LocationListFilter {...{ facets }} />
-        <LocationListContainer {...{ items }} />
-      </Center>
+    <LocationListContext.Provider value={{ filters: [filters, setFilters], facets, items }}>
+      <HStack spacing={8}>
+        <LocationListFacet />
+
+        <VStack flex={1} alignSelf={"start"}>
+          <LocationListHeader />
+          <LocationListFilter />
+          <LocationListContainer />
+        </VStack>
+      </HStack>
     </LocationListContext.Provider>
   )
 }
