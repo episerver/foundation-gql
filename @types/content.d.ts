@@ -46,6 +46,7 @@ type LocationFilter = {
   continents: string[]
   minAvgTemp: number
   maxAvgTemp: number
+  fullTextSearch: string
 }
 
 type LocationListPageItem = {
