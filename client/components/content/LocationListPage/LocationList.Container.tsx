@@ -5,7 +5,7 @@ import { LocationListContext } from "./LocationList.Context"
 import { LocationListItem } from "./LocationList.Item"
 
 export const LocationListContainer: React.FC = () => {
-  const { items = [] } = useContext(LocationListContext)
+  const { result: { items = [] } = {} } = useContext(LocationListContext)
 
   return (
     <Wrap spacing={"30px"} align={"center"} justify={"center"} flex={1}>

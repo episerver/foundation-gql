@@ -15,8 +15,7 @@ type LocationListQueryResult = {
 }
 
 export default function LocationListPage() {
-  const [items, setItems] = useState<LocationItem[]>([])
-  const [facets, setFacets] = useState<Partial<LocationFacets>>({})
+  const [result, setResult] = useState<LocationItemResult>()
   const [filters, setFilters] = useState<Partial<LocationFilter>>({})
 
   const { data } = useQuery<LocationListQueryResult>(LocationListQuery, {
@@ -24,13 +23,11 @@ export default function LocationListPage() {
   })
 
   useEffect(() => {
-    const { facets, items } = data?.LocationListPage.items[0]._children.LocationItemPage || {}
-    setItems(items || [])
-    setFacets(facets || {})
+    setResult(data?.LocationListPage.items[0]._children.LocationItemPage)
   }, [data])
 
   return (
-    <LocationListContext.Provider value={{ filters: [filters, setFilters], facets, items }}>
+    <LocationListContext.Provider value={{ filters: [filters, setFilters], result }}>
       <HStack spacing={8}>
         <LocationListFacet />
 

@@ -14,7 +14,7 @@ import {
 } from "@chakra-ui/react"
 import Image from "next/image"
 
-export const LocationListItem: React.FC<LocationItem> = ({
+export const LocationListItem: React.FC<Partial<LocationItem>> = ({
   Country,
   IntroText,
   AvgTemp,
@@ -22,12 +22,14 @@ export const LocationListItem: React.FC<LocationItem> = ({
   Created,
   Location,
 }) => {
-  const formattedDate = new Date(Created).toLocaleDateString("en-us", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  })
-  const readTime = Math.round(IntroText.split(" ").length / 10)
+  const formattedDate =
+    Created &&
+    new Date(Created).toLocaleDateString("en-us", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    })
+  const readTime = IntroText && `${Math.round(IntroText.split(" ").length / 10)} min read`
 
   return (
     <Center py={6}>
@@ -92,9 +94,7 @@ export const LocationListItem: React.FC<LocationItem> = ({
           <Avatar src={"https://avatars0.githubusercontent.com/u/1164541?v=4"} />
           <Stack direction={"column"} spacing={0} fontSize={"sm"}>
             <Text fontWeight={600}>Achim Rolle</Text>
-            <Text color={"gray.500"}>
-              {formattedDate} · {readTime} min read
-            </Text>
+            <Text color={"gray.500"}>{[formattedDate, readTime].filter((x) => x).join(" · ")}</Text>
           </Stack>
         </Stack>
       </Box>

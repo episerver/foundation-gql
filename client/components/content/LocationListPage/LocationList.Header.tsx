@@ -16,7 +16,7 @@ import { LocationListContext } from "./LocationList.Context"
 
 export const LocationListHeader: React.FC = () => {
   const {
-    items = [],
+    result: { items = [], total = 0 } = {},
     filters: [filters, setFilters],
   } = useContext(LocationListContext)
 
@@ -26,7 +26,7 @@ export const LocationListHeader: React.FC = () => {
     <HStack alignSelf={"start"} pt={6} pb={4} alignItems="flex-end" w={"100%"}>
       <Heading>Locations</Heading>
       <Text fontSize="xl" pb={"1px"} color="blackAlpha.500">
-        {items.length} items
+        {total} items
       </Text>
       <Container w={300}>
         <InputGroup>

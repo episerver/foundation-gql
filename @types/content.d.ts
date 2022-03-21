@@ -49,11 +49,13 @@ type LocationFilter = {
   fullTextSearch: string
 }
 
+type LocationItemResult = Items<LocationItem> & Facets<LocationFacets> & Total
+
 type LocationListPageItem = {
   MainBody: string
   Name: string
 } & Children<{
-  LocationItemPage: Items<LocationItem> & Facets<LocationFacets>
+  LocationItemPage: LocationItemResult
 }>
 
 type LocationListPage = Items<LocationListPageItem>

@@ -21,6 +21,7 @@ query LocationListQuery(
             _fulltext: { contains: $fullTextSearch }
           }
         ) {
+          total
           items {
             ...LocationItemFragment
           }

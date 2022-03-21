@@ -7,7 +7,7 @@ import { Facet } from "client/components/shared/Facet"
 
 export const LocationListFacet: React.FC = () => {
   const {
-    facets,
+    result: { facets = undefined } = {},
     filters: [filters, setFilters],
   } = useContext(LocationListContext)
 
@@ -21,7 +21,7 @@ export const LocationListFacet: React.FC = () => {
       width={"300px"}
     >
       <Accordion defaultIndex={defaultIndex} allowMultiple>
-        {facets.Country && (
+        {facets?.Country && (
           <Facet
             type="select"
             title="Country"
@@ -33,7 +33,7 @@ export const LocationListFacet: React.FC = () => {
           />
         )}
 
-        {facets.Continent && (
+        {facets?.Continent && (
           <Facet
             type="select"
             title="Continent"
@@ -45,7 +45,7 @@ export const LocationListFacet: React.FC = () => {
           />
         )}
 
-        {facets.AverageTemperature && (
+        {facets?.AverageTemperature && (
           <Facet
             type="range"
             title="Average Temperature"
