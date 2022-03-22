@@ -8,7 +8,7 @@ export const LocationListContainer: React.FC = () => {
   const { result: { items = [] } = {} } = useContext(LocationListContext)
 
   return (
-    <Wrap spacing={"30px"} align={"center"} justify={"center"} flex={1}>
+    <Wrap spacing={"30px"} align={"center"} justify={"center"} flex={1} width={"100%"}>
       {items.map((item) => (
         <WrapItem key={item.Location} alignSelf={"start"}>
           <LocationListItem {...item} />

@@ -1,0 +1,17 @@
+query SearchQuery($text: String) {
+  Content(where: { _fulltext: { contains: $text } }) {
+    items {
+      ContentLink {
+        GuidValue
+      }
+      Language {
+        DisplayName
+        Name
+      }
+      Url
+      ContentType
+      Name
+      _fulltext
+    }
+  }
+}

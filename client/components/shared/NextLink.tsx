@@ -6,7 +6,13 @@ type LinkProps = NextLinkProps & ChakraLinkProps
 export const NextLink = forwardRef<LinkProps, "a">(({ href, children, ...props }, ref) => {
   return (
     <Link href={href} {...props} passHref>
-      <ChakraLink ref={ref} {...props}>
+      <ChakraLink
+        ref={ref}
+        _hover={{
+          textDecoration: "none",
+        }}
+        {...props}
+      >
         {children}
       </ChakraLink>
     </Link>

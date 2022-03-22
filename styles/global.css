@@ -1,3 +1,7 @@
 .chakra-wrap__list {
   width: 100%;
 }
+
+svg > path {
+  stroke: currentColor !important;
+}

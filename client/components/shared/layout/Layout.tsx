@@ -9,13 +9,12 @@ import { Navbar, NavItem } from "./Navbar"
 
 import { LayoutContext } from "client/context/Layout.Context"
 import { useRouter } from "client/hooks/optimizely/useRouter"
+import { getContentType } from "client/utils/content.utils"
 import LayoutQuery from "gql/LayoutQuery.gql"
 
 type LayoutQueryResult = {
   HomePage: Items<Content & Children<{ Content: Items<Content> }>>
 }
-
-const excludedContentTypes = ["Content", "Page"]
 
 const mapNavItem =
   (activePath: string) =>
@@ -23,7 +22,7 @@ const mapNavItem =
     label: item.Name,
     active: item.RouteSegment === activePath,
     href: item.RouteSegment,
-    contentType: item.ContentType.find((x) => !excludedContentTypes.includes(x)),
+    contentType: getContentType(item.ContentType),
   })
 
 export const Layout: React.FC = () => {

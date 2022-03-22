@@ -50,7 +50,6 @@ const DesktopNav: React.FC<NavbarProps> = ({ items }) => {
                 fontWeight={500}
                 color={linkColor}
                 _hover={{
-                  textDecoration: "none",
                   color: linkHoverColor,
                 }}
                 bg={navItem.active ? "gray.200" : "transparent"}
