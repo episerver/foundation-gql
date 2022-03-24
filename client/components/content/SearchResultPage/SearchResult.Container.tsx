@@ -5,7 +5,6 @@ import { Ref, useCallback, useEffect, useState } from "react"
 import { SearchResultItem } from "./SearchResult.Item"
 
 import { useQuery } from "client/hooks/optimizely/useQuery"
-import { getContentType } from "client/utils/content.utils"
 import SearchQuery from "gql/SearchQuery.gql"
 
 type SearchResult = {
@@ -24,7 +23,7 @@ export const SearchResultContainer: React.FC = () => {
   const [text, setText] = useState("")
   const [result, setResult] = useState<SearchResult[]>([])
   const { data } = useQuery<SearchQueryResult>(SearchQuery, {
-    variables: { text },
+    variables: { text: text && `%${text}%` },
     skip: !text,
   })
 

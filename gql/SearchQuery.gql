@@ -1,5 +1,5 @@
 query SearchQuery($text: String) {
-  Content(where: { _fulltext: { contains: $text } }) {
+  Content(where: { _fulltext: { like: $text } }) {
     items {
       ContentLink {
         GuidValue
