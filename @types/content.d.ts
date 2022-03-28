@@ -73,6 +73,7 @@ type LocationListPageItem = {
 }>
 
 type LocationListPage = Items<LocationListPageItem>
+type LocationItemPage = Items<LocationItem>
 
 // common types
 type Bucket = {

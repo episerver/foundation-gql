@@ -9,13 +9,13 @@ export const useRouter = (config?: Partial<typeof defaults>) => {
   const router = useNextRouter()
   const page = router.query.page as string[]
   const cfg = { ...config, ...defaults }
-  const [lang = cfg.lang, route = cfg.route, ...fragments] = page || []
+  const [lang = cfg.lang, route = cfg.route, ...rest] = page || []
+  const segments = [lang, route, ...rest].filter((x) => x)
 
   return {
     router,
     lang,
-    path: [lang, route, ...fragments] //
-      .filter((x) => x)
-      .join("/"),
+    segments,
+    path: segments.join("/"),
   }
 }

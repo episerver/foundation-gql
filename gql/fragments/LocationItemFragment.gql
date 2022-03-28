@@ -7,7 +7,5 @@ fragment LocationItemFragment on LocationItemPage {
   Longitude
   Latitude
   IntroText: MainIntro
-  ContentLink {
-    GuidValue
-  }
+  Url
 }
