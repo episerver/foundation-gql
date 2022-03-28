@@ -1,58 +1,49 @@
 import { useQuery } from "@apollo/client"
 import { Progress } from "@chakra-ui/react"
 import Head from "next/head"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 import { DynamicContent } from "../DynamicContent"
 
-import { Navbar, NavItem } from "./Navbar"
+import { Navbar } from "./Navbar"
 
 import { LayoutContext } from "client/context/Layout.Context"
 import { useRouter } from "client/hooks/optimizely/useRouter"
-import { getContentType } from "client/utils/content.utils"
+import { SiteMap } from "client/sitemap"
 import LayoutQuery from "gql/LayoutQuery.gql"
 
 type LayoutQueryResult = {
-  HomePage: Items<Content & Children<{ Content: Items<Content> }>>
+  HomePage: Items<NavigationItem>
 }
-
-const mapNavItem =
-  (activePath: string) =>
-  (item: Content): NavItem => ({
-    label: item.Name,
-    active: item.RouteSegment === activePath,
-    href: item.RouteSegment,
-    contentType: getContentType(item.ContentType),
-  })
 
 export const Layout: React.FC = () => {
   const [loading, setLoading] = useState(false)
-  const { router, path } = useRouter()
+  const [sitemap, setSitemap] = useState<SiteMap>()
+  const { path } = useRouter()
   const { data } = useQuery<LayoutQueryResult>(LayoutQuery)
 
-  if (data) {
-    const root = data.HomePage.items[0]
-    const home = mapNavItem(path)(root)
-    const items = root._children.Content.items.map(mapNavItem(path))
-    const route = [home, ...items].find((x) => x.active)
+  useEffect(() => {
+    const home = data?.HomePage.items[0]
+    const siteMap = home && new SiteMap(home)
+    setSitemap(siteMap)
+  }, [data])
 
-    if (route) {
-      return (
-        <LayoutContext.Provider value={{ loading: [loading, setLoading] }}>
-          <Head>
-            <title>{route.label}</title>
-          </Head>
+  if (sitemap) {
+    const route = sitemap.getRoute(path)
 
-          <Navbar home={home} items={items} />
-          {loading && <Progress size="xs" colorScheme={"yellow"} isIndeterminate />}
-          <DynamicContent contentType={route.contentType} />
+    return (
+      <LayoutContext.Provider value={{ loading: [loading, setLoading] }}>
+        <Head>
+          <title>{route?.name}</title>
+        </Head>
 
-          {/* <Footer /> */}
-        </LayoutContext.Provider>
-      )
-    }
+        <Navbar home={sitemap.home} path={path} />
+        {loading && <Progress size="xs" colorScheme={"yellow"} isIndeterminate />}
+        <DynamicContent contentType={route?.contentType} />
 
-    router.push(home.href!)
+        {/* <Footer /> */}
+      </LayoutContext.Provider>
+    )
   }
 
   return null

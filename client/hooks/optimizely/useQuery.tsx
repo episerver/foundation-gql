@@ -5,12 +5,12 @@ import { useLayout } from "./useLayout"
 
 type UseQueryHook = typeof useApolloQuery
 
-export const useQuery: UseQueryHook = (query, variables) => {
+export const useQuery: UseQueryHook = (query, options) => {
   const {
     loading: [_, setLoading],
   } = useLayout()
 
-  const result = useApolloQuery(query, variables)
+  const result = useApolloQuery(query, options)
 
   useEffect(() => {
     setLoading(result.loading)

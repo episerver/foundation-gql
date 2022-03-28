@@ -2,14 +2,13 @@
 
 query LocationListQuery(
   $locale: [Locale] = [en]
-  $route: String = "locations"
   $continents: [String] = []
   $countries: [String] = []
   $minAvgTemp: Float = -50
   $maxAvgTemp: Float = 50
   $fullTextSearch: String = ""
 ) {
-  LocationListPage(locale: $locale, where: { RouteSegment: { eq: $route } }) {
+  LocationListPage(locale: $locale, where: { RouteSegment: { eq: "locations" } }) {
     items {
       Name
       MainBody

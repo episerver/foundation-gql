@@ -1,0 +1,6 @@
+fragment ContentFragment on Content {
+  Name
+  ContentType
+  RouteSegment
+  Url
+}

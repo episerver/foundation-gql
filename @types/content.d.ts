@@ -36,9 +36,10 @@ type ContentAreaItem = {
   ContentLink: ContentReference
 }
 
-type LocationItem = {
+type NavigationItem = Content & Children<{ Content: Items<HomePageItem> }>
+
+type LocationItem = Content & {
   AvgTemp: number
-  ContentLink: { GuidValue: string }
   Continent: string
   Country: string
   Created: string

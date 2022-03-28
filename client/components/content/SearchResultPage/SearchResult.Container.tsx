@@ -1,5 +1,5 @@
 import { SearchIcon } from "@chakra-ui/icons"
-import { Container, Divider, Input, InputGroup, InputLeftElement, VStack } from "@chakra-ui/react"
+import { Divider, Input, InputGroup, InputLeftElement, VStack } from "@chakra-ui/react"
 import { Ref, useCallback, useEffect, useState } from "react"
 
 import { SearchResultItem } from "./SearchResult.Item"
@@ -98,22 +98,20 @@ export const SearchResultContainer: React.FC = () => {
       {result && result.length ? (
         <>
           <Divider />
-          <Container p={4} maxH={600} overflow={"auto"}>
-            <VStack align={"stretch"}>
-              {result.map((item, i) => (
-                <SearchResultItem
-                  key={i}
-                  text={item.text}
-                  contentTypes={item.contentTypes}
-                  language={item.language}
-                  href={item.href}
-                  active={i === selectedIndex}
-                  refObj={i === selectedIndex ? scrollRef : undefined}
-                  onHover={() => setNewSelectedIndex(i)}
-                />
-              ))}
-            </VStack>
-          </Container>
+          <VStack align={"stretch"} p={4} maxH={600} overflow={"auto"}>
+            {result.map((item, i) => (
+              <SearchResultItem
+                key={i}
+                text={item.text}
+                contentTypes={item.contentTypes}
+                language={item.language}
+                href={item.href}
+                active={i === selectedIndex}
+                refObj={i === selectedIndex ? scrollRef : undefined}
+                onHover={() => setNewSelectedIndex(i)}
+              />
+            ))}
+          </VStack>
         </>
       ) : null}
     </>

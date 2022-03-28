@@ -1,17 +1,22 @@
+#import "./fragments/ContentFragment.gql"
+
 query LayoutQuery {
-  HomePage(locale: en, where: { Name: { eq: "Epi Health" } }) {
+  HomePage(locale: en, where: { ContentType: { eq: "Page" }, RouteSegment: { eq: "home" } }) {
     items {
       Name
       RouteSegment
+      Url
       ContentType
       _children {
         Content {
           items {
-            Name
-            ContentType
-            RouteSegment
-            ContentLink {
-              GuidValue
+            ...ContentFragment
+            _children {
+              Content {
+                items {
+                  ...ContentFragment
+                }
+              }
             }
           }
         }

@@ -18,33 +18,26 @@ import {
 
 import { NextLink } from "../NextLink"
 
-export type NavItem = {
-  label: string
-  active?: boolean
-  subLabel?: string
-  children?: Array<NavItem>
-  href?: string
-  contentType?: string
-}
+import { Route } from "client/sitemap"
 
 type NavbarProps = {
-  home: NavItem
-  items: NavItem[]
+  home?: Route
+  path: string
 }
 
-const DesktopNav: React.FC<NavbarProps> = ({ items }) => {
+const DesktopNav: React.FC<NavbarProps> = ({ home, path }) => {
   const linkColor = useColorModeValue("gray.600", "gray.200")
   const linkHoverColor = useColorModeValue("gray.800", "white")
   const popoverContentBgColor = useColorModeValue("white", "gray.800")
 
   return (
     <Stack direction={"row"} spacing={4} align={"center"}>
-      {items.map((navItem) => (
-        <Box key={navItem.label}>
+      {home?.subRoutes?.map((route) => (
+        <Box key={route.name}>
           <Popover trigger={"hover"} placement={"bottom-start"}>
             <PopoverTrigger>
               <NextLink
-                href={navItem.href ?? "#"}
+                href={route.path ?? "#"}
                 p={2}
                 fontSize={"sm"}
                 fontWeight={500}
@@ -52,14 +45,14 @@ const DesktopNav: React.FC<NavbarProps> = ({ items }) => {
                 _hover={{
                   color: linkHoverColor,
                 }}
-                bg={navItem.active ? "gray.200" : "transparent"}
+                bg={route.path === path ? "gray.200" : "transparent"}
                 borderRadius={4}
               >
-                {navItem.label}
+                {route.name}
               </NextLink>
             </PopoverTrigger>
 
-            {navItem.children && (
+            {route.subRoutes && route.subRoutes.length > 0 && (
               <PopoverContent
                 border={0}
                 boxShadow={"xl"}
@@ -68,9 +61,9 @@ const DesktopNav: React.FC<NavbarProps> = ({ items }) => {
                 rounded={"xl"}
                 minW={"sm"}
               >
-                <Stack>
-                  {navItem.children.map((child) => (
-                    <DesktopSubNav key={child.label} {...child} />
+                <Stack maxH={400} overflow={"auto"}>
+                  {route.subRoutes.map((child) => (
+                    <DesktopSubNav key={child.name} {...child} />
                   ))}
                 </Stack>
               </PopoverContent>
@@ -82,10 +75,10 @@ const DesktopNav: React.FC<NavbarProps> = ({ items }) => {
   )
 }
 
-const DesktopSubNav: React.FC<NavItem> = ({ label, href, subLabel }) => {
+const DesktopSubNav: React.FC<Route> = ({ name, path }) => {
   return (
     <NextLink
-      href={href ?? "#"}
+      href={path}
       role={"group"}
       display={"block"}
       p={2}
@@ -95,9 +88,9 @@ const DesktopSubNav: React.FC<NavItem> = ({ label, href, subLabel }) => {
       <Stack direction={"row"} align={"center"}>
         <Box>
           <Text transition={"all .3s ease"} _groupHover={{ color: "pink.400" }} fontWeight={500}>
-            {label}
+            {name}
           </Text>
-          <Text fontSize={"sm"}>{subLabel}</Text>
+          <Text fontSize={"sm"}>{name}</Text>
         </Box>
         <Flex
           transition={"all .3s ease"}
@@ -115,25 +108,25 @@ const DesktopSubNav: React.FC<NavItem> = ({ label, href, subLabel }) => {
   )
 }
 
-const MobileNav: React.FC<NavbarProps> = ({ items }) => {
+const MobileNav: React.FC<NavbarProps> = ({ home }) => {
   return (
     <Stack bg={useColorModeValue("white", "gray.800")} p={4} display={{ md: "none" }}>
-      {items.map((navItem) => (
-        <MobileNavItem key={navItem.label} {...navItem} />
+      {home?.subRoutes?.map((route) => (
+        <MobileNavItem key={route.path} {...route} />
       ))}
     </Stack>
   )
 }
 
-const MobileNavItem: React.FC<NavItem> = ({ label, children, href }) => {
+const MobileNavItem: React.FC<Route> = ({ name, path, subRoutes }) => {
   const { isOpen, onToggle } = useDisclosure()
 
   return (
-    <Stack spacing={4} onClick={children && onToggle}>
+    <Stack spacing={4} onClick={subRoutes && onToggle}>
       <Flex
         py={2}
         as={NextLink}
-        href={href ?? "#"}
+        href={path}
         justify={"space-between"}
         align={"center"}
         _hover={{
@@ -141,9 +134,9 @@ const MobileNavItem: React.FC<NavItem> = ({ label, children, href }) => {
         }}
       >
         <Text fontWeight={600} color={useColorModeValue("gray.600", "gray.200")}>
-          {label}
+          {name}
         </Text>
-        {children && (
+        {subRoutes && (
           <Icon
             as={ChevronDownIcon}
             transition={"all .25s ease-in-out"}
@@ -163,12 +156,11 @@ const MobileNavItem: React.FC<NavItem> = ({ label, children, href }) => {
           borderColor={useColorModeValue("gray.200", "gray.700")}
           align={"start"}
         >
-          {children &&
-            children.map((child) => (
-              <NextLink key={child.label} py={2} href={child.href ?? "#"}>
-                {child.label}
-              </NextLink>
-            ))}
+          {subRoutes?.map(({ name, path }) => (
+            <NextLink key={path} py={2} href={path}>
+              {name}
+            </NextLink>
+          ))}
         </Stack>
       </Collapse>
     </Stack>
@@ -205,14 +197,14 @@ export const Navbar: React.FC<NavbarProps> = (props) => {
           />
         </Flex>
         <Flex flex={{ base: 1 }} justify={{ base: "center", md: "start" }}>
-          <NextLink href={props.home.href || "/"}>
+          <NextLink href={props.home?.path || "#"}>
             <Text
               textAlign={useBreakpointValue({ base: "center", md: "left" })}
               fontFamily={"heading"}
               color={useColorModeValue("gray.800", "white")}
               fontSize={"x-large"}
             >
-              {props.home.label}
+              {props.home?.name}
             </Text>
           </NextLink>
 
@@ -246,44 +238,3 @@ export const Navbar: React.FC<NavbarProps> = (props) => {
     </Box>
   )
 }
-
-export const NAV_ITEMS: Array<NavItem> = [
-  {
-    label: "Inspiration",
-    children: [
-      {
-        label: "Explore Design Work",
-        subLabel: "Trending Design to inspire you",
-        href: "#",
-      },
-      {
-        label: "New & Noteworthy",
-        subLabel: "Up-and-coming Designers",
-        href: "#",
-      },
-    ],
-  },
-  {
-    label: "Find Work",
-    children: [
-      {
-        label: "Job Board",
-        subLabel: "Find your dream design job",
-        href: "#",
-      },
-      {
-        label: "Freelance Projects",
-        subLabel: "An exclusive list for contract work",
-        href: "#",
-      },
-    ],
-  },
-  {
-    label: "Learn Design",
-    href: "#",
-  },
-  {
-    label: "Hire Designers",
-    href: "#",
-  },
-]

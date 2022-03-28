@@ -1,12 +1,21 @@
 import { useRouter as useNextRouter } from "next/router"
 
-export const useRouter = () => {
+const defaults = {
+  lang: "en",
+  route: "",
+}
+
+export const useRouter = (config?: Partial<typeof defaults>) => {
   const router = useNextRouter()
   const page = router.query.page as string[]
-  const [...fragments] = page || []
+  const cfg = { ...config, ...defaults }
+  const [lang = cfg.lang, route = cfg.route, ...fragments] = page || []
 
   return {
     router,
-    path: fragments.join("/"),
+    lang,
+    path: [lang, route, ...fragments] //
+      .filter((x) => x)
+      .join("/"),
   }
 }
