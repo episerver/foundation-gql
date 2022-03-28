@@ -56,3 +56,34 @@ type LocationListPageItem = {
 }>
 
 type LocationListPage = Items<LocationListPageItem>
+
+type BlogItemPage = {
+  BlogName: string
+  Author: string
+  TeaserText: string
+  MainBody: string
+  Created: date
+}
+
+type BlogFacets = {
+  author: Bucket[]
+}
+
+type BlogFilter = {
+  authors: string[]
+  mainBlogGuid: string
+}
+
+type MonthBlogListPageItem = {
+  Name: string
+} & Children<{
+  BlogItemPage: Items<BlogItemPage> & Facets<BlogFacets>
+}>
+
+type YearBlogListPageItem = {
+  Name: string
+} & Children<{
+  BlogListPage: Items<MonthBlogListPageItem> & Facets<BlogFacets>
+}>
+
+type BlogListPage = Items<YearBlogListPageItem>

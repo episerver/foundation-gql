@@ -1,0 +1,88 @@
+query BlogPosts(
+  $locale: [Locale] = [en],
+  $language: String = "en"
+  $mainBlogGuid: String = "eb989c6c-087b-41fc-838b-0fc87214e846"
+  $authors: [String] = [],
+  $categories: [String] = [],
+  $fullTextSearch: String = ""
+) {
+  BlogListPage(
+        locale: $locale
+    where: {
+      Language: {
+        Name: {
+          eq: $language
+        }
+      }
+      ParentLink: {
+        GuidValue: {
+          eq: $mainBlogGuid
+        }
+      }
+    }
+  ) {
+    items {
+       Name
+       _children {
+          BlogListPage(
+            locale: $locale
+            where: {
+              Language: {
+                Name: {
+                  eq: $language
+                }
+              }
+            }
+          ) {
+            items {
+               Name
+               _children { 
+                BlogItemPage(
+                  locale: $locale
+                  where: {
+                    Language: {
+                      Name: {
+                        eq: $language
+                      }
+                    }
+                    Author: {
+                      in: $authors
+                    }
+                    Categories: {
+                      Expanded: {
+                        Name: {
+                          in: $categories
+                        }
+                      }
+                    }
+                    _fulltext: {
+                      contains: $fullTextSearch
+                    }
+                  } 
+                ) {
+                  items { 
+                    BlogName: Name
+                    Author
+                    PageImage { 
+                      BlogImageUrl: Url
+                    }
+                    ContentLink {
+                      BlogGuid: GuidValue
+                    } 
+                    TeaserText
+                    MainBody
+                    Categories {
+                      Expanded {
+                        Name
+                      }
+                    }
+                    StartPublish
+                  }
+                }
+              }
+            }
+          }
+        }
+    }
+  }
+}
