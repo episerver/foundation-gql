@@ -55,12 +55,18 @@ type LocationFacets = {
   Country: Bucket[]
 }
 
+type LocationSort = {
+  Name: OrderBy
+  AvgTemp: OrderBy
+}
+
 type LocationFilter = {
   countries: string[]
   continents: string[]
   minAvgTemp: number
   maxAvgTemp: number
   fullTextSearch: string
+  orderBy: Partial<LocationSort>
 }
 
 type LocationItemResult = Items<LocationItem> & Facets<LocationFacets> & Total
@@ -100,3 +106,5 @@ type Total = {
 type Children<T> = {
   _children: T
 }
+
+type OrderBy = "ASC" | "DESC"

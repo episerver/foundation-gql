@@ -6,6 +6,7 @@ query LocationListQuery(
   $countries: [String] = []
   $minAvgTemp: Float = -50
   $maxAvgTemp: Float = 50
+  $orderBy: LocationItemPageOrderByInput
   $fullTextSearch: String = ""
 ) {
   LocationListPage(locale: $locale, where: { RouteSegment: { eq: "locations" } }) {
@@ -21,6 +22,7 @@ query LocationListQuery(
             Continent: { in: $continents }
             _fulltext: { contains: $fullTextSearch }
           }
+          orderBy: $orderBy
         ) {
           total
           items {

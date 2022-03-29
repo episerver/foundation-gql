@@ -1,4 +1,4 @@
-import { HStack, Tag, TagCloseButton, TagLabel } from "@chakra-ui/react"
+import { HStack, Tag, TagCloseButton, TagLabel, ThemeTypings } from "@chakra-ui/react"
 import { useContext } from "react"
 
 import { LocationListContext } from "./LocationList.Context"
@@ -8,11 +8,12 @@ import { useLayout } from "client/hooks/optimizely/useLayout"
 type FilterTag = {
   display: string
   onRemove: Function
+  colorSchema?: ThemeTypings["colorSchemes"]
 }
 
-const FilterTag: React.FC<FilterTag> = ({ display, onRemove }) => {
+const FilterTag: React.FC<FilterTag> = ({ colorSchema, display, onRemove }) => {
   return (
-    <Tag size={"lg"} variant="subtle" colorScheme="blue">
+    <Tag size={"lg"} variant="subtle" colorScheme={colorSchema || "blue"}>
       <TagLabel>{display}</TagLabel>
       <TagCloseButton onClick={() => onRemove()} />
     </Tag>
@@ -66,6 +67,19 @@ export const LocationListFilter: React.FC = () => {
           onRemove={() => {
             const { minAvgTemp, maxAvgTemp, ...newFilters } = filters
             setFilters({ ...newFilters })
+          }}
+        />
+      )}
+
+      {filters.orderBy && (
+        <FilterTag
+          colorSchema={"purple"}
+          display={` ${Object.values(filters.orderBy)[0] === "ASC" ? "▲" : "▼"} ${
+            Object.keys(filters.orderBy)[0]
+          }`}
+          onRemove={() => {
+            const { orderBy, ...rest } = filters
+            setFilters({ ...rest })
           }}
         />
       )}
