@@ -8,6 +8,7 @@ import { LocationListFilter } from "./LocationList.Filter"
 import { LocationListHeader } from "./LocationList.Header"
 
 import { useQuery } from "client/hooks/optimizely/useQuery"
+import { useRouter } from "client/hooks/optimizely/useRouter"
 import LocationListQuery from "gql/LocationListQuery.gql"
 
 type LocationListQueryResult = {
@@ -17,9 +18,9 @@ type LocationListQueryResult = {
 export default function LocationListPage() {
   const [result, setResult] = useState<LocationItemResult>()
   const [filters, setFilters] = useState<Partial<LocationFilter>>({})
-
+  const { path } = useRouter()
   const { data } = useQuery<LocationListQueryResult>(LocationListQuery, {
-    variables: { ...filters },
+    variables: { ...filters, path: `%${path}/` },
   })
 
   useEffect(() => {

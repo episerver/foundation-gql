@@ -8,8 +8,9 @@ query LocationListQuery(
   $maxAvgTemp: Float = 50
   $orderBy: LocationItemPageOrderByInput
   $fullTextSearch: String = ""
+  $path: String
 ) {
-  LocationListPage(locale: $locale, where: { RouteSegment: { eq: "locations" } }) {
+  LocationListPage(locale: $locale, where: { Url: { like: $path } }) {
     items {
       Name
       MainBody
