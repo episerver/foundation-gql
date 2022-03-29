@@ -5,6 +5,7 @@ import { Ref, useCallback, useEffect, useState } from "react"
 import { SearchResultItem } from "./SearchResult.Item"
 
 import { useQuery } from "client/hooks/optimizely/useQuery"
+import { useRouter } from "client/hooks/optimizely/useRouter"
 import SearchQuery from "gql/SearchQuery.gql"
 
 type SearchResult = {
@@ -22,6 +23,7 @@ export const SearchResultContainer: React.FC = () => {
   const [selectedIndex, setSelectedIndex] = useState(0)
   const [text, setText] = useState("")
   const [result, setResult] = useState<SearchResult[]>([])
+  const { router } = useRouter()
   const { data } = useQuery<SearchQueryResult>(SearchQuery, {
     variables: { text: text && `%${text}%` },
     skip: !text,
@@ -36,8 +38,9 @@ export const SearchResultContainer: React.FC = () => {
     (event: KeyboardEvent) => {
       if (event.key === "ArrowUp") setNewSelectedIndex(selectedIndex - 1)
       if (event.key === "ArrowDown") setNewSelectedIndex(selectedIndex + 1)
+      if (event.key === "Enter") router.push(result[selectedIndex].href)
     },
-    [selectedIndex, setNewSelectedIndex]
+    [result, router, selectedIndex, setNewSelectedIndex]
   )
 
   const setSearchResult = useCallback((data: SearchQueryResult | undefined, query: string) => {
