@@ -36,7 +36,11 @@ type ContentAreaItem = {
   ContentLink: ContentReference
 }
 
-type NavigationItem = Content & Children<{ Content: Items<HomePageItem> }>
+type ExistingLanguages = {
+  ExistingLanguages: LanguageModel[]
+}
+
+type NavigationItem = Content & ExistingLanguages & Children<{ Content: Items<HomePageItem> }>
 
 type LocationItem = Content & {
   AvgTemp: number

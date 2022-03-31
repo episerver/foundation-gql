@@ -1,12 +1,20 @@
 #import "./fragments/ContentFragment.gql"
 
-query LayoutQuery {
-  HomePage(locale: en, where: { ContentType: { eq: "Page" }, RouteSegment: { eq: "home" } }) {
+query LayoutQuery($locale: [Locale] = [en]) {
+  HomePage(locale: $locale, where: { ContentType: { eq: "Page" }, RouteSegment: { eq: "home" } }) {
     items {
       Name
       RouteSegment
       Url
       ContentType
+      ExistingLanguages {
+        DisplayName
+        Name
+      }
+      MasterLanguage {
+        DisplayName
+        Name
+      }
       _children {
         Content {
           items {

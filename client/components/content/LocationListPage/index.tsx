@@ -18,9 +18,13 @@ type LocationListQueryResult = {
 export default function LocationListPage() {
   const [result, setResult] = useState<LocationItemResult>()
   const [filters, setFilters] = useState<Partial<LocationFilter>>({})
-  const { path } = useRouter()
+  const { path, locale } = useRouter()
   const { data } = useQuery<LocationListQueryResult>(LocationListQuery, {
-    variables: { ...filters, path: `%${path}/` },
+    variables: {
+      ...filters,
+      path: `%${path}/`,
+      locale,
+    },
   })
 
   useEffect(() => {

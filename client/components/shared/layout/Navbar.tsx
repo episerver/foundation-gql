@@ -18,11 +18,14 @@ import {
 
 import { NextLink } from "../NextLink"
 
+import { LocaleSelector } from "./LocaleSelector"
+
 import { Route } from "client/sitemap"
 
 type NavbarProps = {
-  home?: Route
+  home: Route
   path: string
+  locales: LanguageModel[]
 }
 
 const DesktopNav: React.FC<NavbarProps> = ({ home, path }) => {
@@ -32,7 +35,7 @@ const DesktopNav: React.FC<NavbarProps> = ({ home, path }) => {
 
   return (
     <Stack direction={"row"} spacing={4} align={"center"}>
-      {home?.subRoutes?.map((route) => (
+      {home.subRoutes?.map((route) => (
         <Box key={route.name}>
           <Popover trigger={"hover"} placement={"bottom-start"}>
             <PopoverTrigger>
@@ -111,7 +114,7 @@ const DesktopSubNav: React.FC<Route> = ({ name, path }) => {
 const MobileNav: React.FC<NavbarProps> = ({ home }) => {
   return (
     <Stack bg={useColorModeValue("white", "gray.800")} p={4} display={{ md: "none" }}>
-      {home?.subRoutes?.map((route) => (
+      {home.subRoutes?.map((route) => (
         <MobileNavItem key={route.path} {...route} />
       ))}
     </Stack>
@@ -197,14 +200,14 @@ export const Navbar: React.FC<NavbarProps> = (props) => {
           />
         </Flex>
         <Flex flex={{ base: 1 }} justify={{ base: "center", md: "start" }}>
-          <NextLink href={props.home?.path || "#"}>
+          <NextLink href={props.home.path || "#"}>
             <Text
               textAlign={useBreakpointValue({ base: "center", md: "left" })}
               fontFamily={"heading"}
               color={useColorModeValue("gray.800", "white")}
               fontSize={"x-large"}
             >
-              {props.home?.name}
+              {props.home.name}
             </Text>
           </NextLink>
 
@@ -212,6 +215,12 @@ export const Navbar: React.FC<NavbarProps> = (props) => {
             <DesktopNav {...props} />
           </Flex>
         </Flex>
+
+        {props.locales && (
+          <Stack mr={10}>
+            <LocaleSelector locales={props.locales} />
+          </Stack>
+        )}
 
         <Stack flex={{ base: 1, md: 0 }} justify={"flex-end"} direction={"row"} spacing={6}>
           <Button as={"a"} fontSize={"sm"} fontWeight={400} variant={"link"} href={"#"}>

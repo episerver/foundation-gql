@@ -9,10 +9,11 @@ type LocationItemQueryResult = {
 }
 
 export default function LocationItemPage() {
-  const { path } = useRouter()
+  const { path, locale } = useRouter()
   const { data } = useQuery<LocationItemQueryResult>(LocationItemQuery, {
     variables: {
       route: `%${path}/`,
+      locale,
     },
   })
   const location = data?.LocationItemPage.items[0]

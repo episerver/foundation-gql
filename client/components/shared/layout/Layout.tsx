@@ -19,8 +19,12 @@ type LayoutQueryResult = {
 export const Layout: React.FC = () => {
   const [loading, setLoading] = useState(false)
   const [sitemap, setSitemap] = useState<SiteMap>()
-  const { path } = useRouter()
-  const { data } = useQuery<LayoutQueryResult>(LayoutQuery)
+  const { path, locale } = useRouter()
+  const { data } = useQuery<LayoutQueryResult>(LayoutQuery, {
+    variables: {
+      locale,
+    },
+  })
 
   useEffect(() => {
     const home = data?.HomePage.items[0]
@@ -32,12 +36,16 @@ export const Layout: React.FC = () => {
     const route = sitemap.getRoute(path)
 
     return (
-      <LayoutContext.Provider value={{ loading: [loading, setLoading] }}>
+      <LayoutContext.Provider
+        value={{
+          loading: [loading, setLoading],
+        }}
+      >
         <Head>
           <title>{route?.name}</title>
         </Head>
 
-        <Navbar home={sitemap.home} path={path} />
+        <Navbar home={sitemap.home} path={path} locales={sitemap.locales} />
         {loading && <Progress size="xs" colorScheme={"yellow"} isIndeterminate />}
         <DynamicContent contentType={route?.contentType} />
 

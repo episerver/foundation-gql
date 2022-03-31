@@ -10,12 +10,15 @@ export type Route = {
 type RouteMap = Record<string, Route | undefined>
 
 export class SiteMap {
-  private _home: Route
   private _routeMap: RouteMap
+  private _home: Route
+  private _locales: LanguageModel[]
 
   constructor(home: NavigationItem) {
     this._routeMap = {}
     this._home = this.mapNavItem(home)
+    this._locales = home.ExistingLanguages
+    console.table(Object.values(this._routeMap), ["path", "contentType", "name", "subRoutes"])
   }
 
   get home() {
@@ -24,6 +27,10 @@ export class SiteMap {
 
   get navItems() {
     return this._home.subRoutes
+  }
+
+  get locales() {
+    return this._locales
   }
 
   getRoute(path: string) {

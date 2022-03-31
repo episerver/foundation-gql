@@ -1,5 +1,5 @@
-query HomePageQuery {
-  HomePage(locale: en, where: { Name: { eq: "Epi Health" } }) {
+query HomePageQuery($locale: [Locale] = [en]) {
+  HomePage(locale: $locale, where: { Name: { eq: "Epi Health" } }) {
     items {
       Name
       ContentLink {

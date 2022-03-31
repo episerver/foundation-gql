@@ -1,6 +1,7 @@
 import { VStack, StackDivider, Flex } from "@chakra-ui/react"
 
 import { useQuery } from "client/hooks/optimizely/useQuery"
+import { useRouter } from "client/hooks/optimizely/useRouter"
 import HomePageQuery from "gql/HomePageQuery.gql"
 
 type HomePageItem = {
@@ -12,7 +13,12 @@ type HomePageQueryResult = {
 }
 
 export default function HomePage() {
-  const { data } = useQuery<HomePageQueryResult>(HomePageQuery)
+  const { locale } = useRouter()
+  const { data } = useQuery<HomePageQueryResult>(HomePageQuery, {
+    variables: {
+      locale,
+    },
+  })
 
   return (
     <VStack divider={<StackDivider borderColor="gray.200" />} spacing={4} align="stretch">
