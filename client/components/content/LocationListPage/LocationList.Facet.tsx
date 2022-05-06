@@ -49,7 +49,7 @@ export const LocationListFacet: React.FC = () => {
           <Facet
             type="range"
             title="Average Temperature"
-            range={[-50, 50]}
+            range={[0, 30]}
             showPits={true}
             values={facets.AverageTemperature}
             filters={[filters.minAvgTemp, filters.maxAvgTemp]}
