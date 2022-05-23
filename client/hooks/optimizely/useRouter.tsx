@@ -12,12 +12,14 @@ export const useRouter = (config?: Partial<typeof defaults>) => {
   const cfg = { ...config, ...defaults }
   const [locale = cfg.locale.Name, ...route] = page || []
   const segments = route.filter((x) => x)
-  const getPath = (locale: string) => [locale, ...segments].join("/")
+  const getPath = (locale: string) => ["", locale, ...segments].join("/")
+  const getLocale = () => locale.toUpperCase()
 
   return {
     router,
-    locale,
+    locale: getLocale(),
     path: getPath(locale),
+    getLocale,
     getPath,
   }
 }

@@ -8,7 +8,7 @@ query SearchQuery($text: String) {
         DisplayName
         Name
       }
-      Url
+      RelativePath
       ContentType
       Name
       _fulltext

@@ -1,4 +1,4 @@
-import { getContentPath, getContentType } from "./utils/content.utils"
+import { getContentType } from "./utils/content.utils"
 
 export type Route = {
   name: string
@@ -38,7 +38,7 @@ export class SiteMap {
   }
 
   private mapNavItem = (content: NavigationItem) => {
-    const contentPath = getContentPath(content.Url!)
+    const contentPath = content.RelativePath
     const route: Route = {
       name: content.Name,
       path: contentPath,

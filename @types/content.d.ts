@@ -2,6 +2,7 @@ type Content = {
   Name: string
   RouteSegment: string
   Url?: string
+  RelativePath: string
   ContentType: string[]
   ContentLink: {
     GuidValue: string
@@ -40,7 +41,7 @@ type ExistingLanguages = {
   ExistingLanguages: LanguageModel[]
 }
 
-type NavigationItem = Content & ExistingLanguages & Children<{ Content: Items<HomePageItem> }>
+type NavigationItem = Content & ExistingLanguages & Children<{ Content: Items<NavigationItem> }>
 
 type LocationItem = Content & {
   AvgTemp: number

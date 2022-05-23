@@ -55,7 +55,7 @@ export const SearchResultContainer: React.FC = () => {
                 text: text,
                 contentTypes: item.ContentType,
                 language: item.Language.Name,
-                href: item.Url ? new URL(item.Url).pathname : "#",
+                href: item.RelativePath || "#",
               } as SearchResult)
           ),
       ],

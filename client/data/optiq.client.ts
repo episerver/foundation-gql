@@ -36,7 +36,14 @@ class OptiqClient extends ApolloClient<NormalizedCacheObject> {
 
     super({
       link: from([errorLink, authMiddleware, httpLink]),
-      cache: new InMemoryCache(),
+      cache: new InMemoryCache({
+        dataIdFromObject(response: any, { typename }) {
+          const id = response.Id || response.ContentLink?.Id
+          return typename && id //
+            ? `${typename}:${id}`
+            : false
+        },
+      }),
     })
   }
 }

@@ -7,5 +7,5 @@ fragment LocationItemFragment on LocationItemPage {
   Longitude
   Latitude
   IntroText: MainIntro
-  Url
+  RelativePath
 }

@@ -1,6 +1,6 @@
 #import "./fragments/LocationItemFragment.gql"
 
-query LocationItemQuery($locale: [Locale] = [en], $route: String) {
+query LocationItemQuery($locale: [Locale] = [EN], $route: String) {
   LocationItemPage(locale: $locale, where: { Url: { like: $route } }) {
     items {
       ...LocationItemFragment

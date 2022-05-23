@@ -1,4 +1,4 @@
-query HomePageQuery($locale: [Locale] = [en]) {
+query HomePageQuery($locale: [Locale] = [EN]) {
   HomePage(locale: $locale, where: { Name: { eq: "Epi Health" } }) {
     items {
       Name

@@ -1,6 +1,9 @@
 fragment ContentFragment on Content {
+  ContentLink {
+    Id
+  }
   Name
   ContentType
   RouteSegment
-  Url
+  RelativePath
 }

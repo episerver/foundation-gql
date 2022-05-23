@@ -1,7 +1,7 @@
 #import "./fragments/LocationItemFragment.gql"
 
 query LocationListQuery(
-  $locale: [Locale] = [en]
+  $locale: [Locale] = [EN]
   $continents: [String] = []
   $countries: [String] = []
   $minAvgTemp: Float = 0

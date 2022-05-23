@@ -14,6 +14,7 @@ import {
   LinkOverlay,
   LinkBox,
 } from "@chakra-ui/react"
+
 import Image from "next/image"
 
 export const LocationListItem: React.FC<Partial<LocationItem>> = ({
@@ -23,7 +24,7 @@ export const LocationListItem: React.FC<Partial<LocationItem>> = ({
   Continent,
   Created,
   Location,
-  Url,
+  RelativePath,
 }) => {
   const formattedDate =
     Created &&
@@ -37,7 +38,7 @@ export const LocationListItem: React.FC<Partial<LocationItem>> = ({
   return (
     <Center py={6}>
       <LinkBox>
-        <LinkOverlay href={Url ? new URL(Url).pathname : "#"}></LinkOverlay>
+        <LinkOverlay href={RelativePath || "#"}></LinkOverlay>
         <Box
           maxW={"445px"}
           w={"full"}
