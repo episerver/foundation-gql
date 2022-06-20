@@ -1,12 +1,15 @@
-type Content = {
+type ContentLink = {
+  ContentLink: {
+    GuidValue: string
+  }
+}
+
+type Content = ContentLink & {
   Name: string
   RouteSegment: string
   Url?: string
   RelativePath: string
   ContentType: string[]
-  ContentLink: {
-    GuidValue: string
-  }
 }
 
 type LanguageModel = {
@@ -18,73 +21,28 @@ type Language = {
   Language: LanguageModel
 }
 
-type Expanded = {
+type Expanded<ContentApiModel = Content> = {
   Expanded: ContentApiModel
 }
 
-type ContentReference = Language &
-  Expanded & {
-    Id: Int
-    WorkId: Int
-    GuidValue: String
-    ProviderName: String
-    Url: String
+type ContentReference<TExpanded = Content> = Language &
+  Expanded<TExpanded> & {
+    Id: number
+    WorkId: number
+    GuidValue: string
+    ProviderName: string
+    Url: string
   }
 
-type ContentAreaItem = {
-  DisplayOption: String
-  Tag: String
-  ContentLink: ContentReference
+type ContentAreaItem<TExpanded = Content> = {
+  DisplayOption: string
+  Tag: string
+  ContentLink: ContentReference<TExpanded>
 }
 
 type ExistingLanguages = {
   ExistingLanguages: LanguageModel[]
 }
-
-type NavigationItem = Content & ExistingLanguages & Children<{ Content: Items<NavigationItem> }>
-
-type LocationItem = Content & {
-  AvgTemp: number
-  Continent: string
-  Country: string
-  Created: string
-  IntroText: string
-  Latitude: number
-  Location: string
-  Longitude: number
-}
-
-type LocationFacets = {
-  AverageTemperature: Bucket[]
-  Continent: Bucket[]
-  Country: Bucket[]
-}
-
-type LocationSort = {
-  Name: OrderBy
-  AvgTemp: OrderBy
-}
-
-type LocationFilter = {
-  countries: string[]
-  continents: string[]
-  minAvgTemp: number
-  maxAvgTemp: number
-  fullTextSearch: string
-  orderBy: Partial<LocationSort>
-}
-
-type LocationItemResult = Items<LocationItem> & Facets<LocationFacets> & Total
-
-type LocationListPageItem = {
-  MainBody: string
-  Name: string
-} & Children<{
-  LocationItemPage: LocationItemResult
-}>
-
-type LocationListPage = Items<LocationListPageItem>
-type LocationItemPage = Items<LocationItem>
 
 // common types
 type Bucket = {

@@ -222,7 +222,7 @@ export const Navbar: React.FC<NavbarProps> = (props) => {
           </Stack>
         )}
 
-        <Stack flex={{ base: 1, md: 0 }} justify={"flex-end"} direction={"row"} spacing={6}>
+        {/* <Stack flex={{ base: 1, md: 0 }} justify={"flex-end"} direction={"row"} spacing={6}>
           <Button as={"a"} fontSize={"sm"} fontWeight={400} variant={"link"} href={"#"}>
             Sign In
           </Button>
@@ -238,7 +238,7 @@ export const Navbar: React.FC<NavbarProps> = (props) => {
           >
             Sign Up
           </Button>
-        </Stack>
+        </Stack> */}
       </Flex>
 
       <Collapse in={isOpen} animateOpacity>

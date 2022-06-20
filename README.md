@@ -13,7 +13,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 - Install [Node.js 12.22.0](https://nodejs.org/) or later
 - Create `.env.local` file on project root and populate with following
   ```sh
-  NEXT_PUBLIC_OPTIQ_URL="https://optimizely.gq"
+  NEXT_PUBLIC_OPTIQ_URL="https://cg.optimizely.com"
   NEXT_PUBLIC_OPTIQ_AUTH="auth-key"
   ```
 - Restore node packages

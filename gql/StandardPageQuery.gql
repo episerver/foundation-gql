@@ -1,0 +1,19 @@
+query StandardPageQuery($ancestors: String, $limit: Int) {
+  StandardPage(
+    where: { Ancestors: { eq: $ancestors } }
+    orderBy: { StartPublish: DESC }
+    limit: $limit
+  ) {
+    items {
+      Name
+      ContentLink {
+        GuidValue
+      }
+      PageImage {
+        Url
+      }
+      RelativePath
+      TeaserText
+    }
+  }
+}

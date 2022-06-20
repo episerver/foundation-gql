@@ -1,3 +1,5 @@
+#import "./fragments/ContainerBlockFragment.gql"
+
 query HomePageQuery($locale: [Locale] = [EN]) {
   HomePage(locale: $locale, where: { Name: { eq: "Epi Health" } }) {
     items {
@@ -13,6 +15,15 @@ query HomePageQuery($locale: [Locale] = [EN]) {
             ContentType
             ContentLink {
               GuidValue
+            }
+            ... on HeroBlock {
+              BlockRatio
+              BackgroundImage {
+                Url
+              }
+            }
+            ... on ContainerBlock {
+              ...ContainerBlockFragment
             }
           }
         }

@@ -1,0 +1,9 @@
+fragment PageListBlockFragment on PageListBlock {
+  Heading
+  Count
+  Roots {
+    ContentLink {
+      GuidValue
+    }
+  }
+}
