@@ -8,12 +8,20 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ---
 
-## Local env
+## Development
 
-- Install [Node.js 12.22.0](https://nodejs.org/) or later
+### Environment
+
+- VSCode
+- VSCode extension: [Apollo GraphQL ](https://marketplace.visualstudio.com/items?itemName=apollographql.vscode-apollo) (optional)
+- [Node.js 12.22.0](https://nodejs.org/) or later
+- Chrome extension: [GraphQL Network Inspector](https://chrome.google.com/webstore/detail/graphql-network-inspector/ndlbedplllcgconngcnfmkadhokfaaln) (optional)
+
+### Project
+
 - Create `.env.local` file on project root and populate with following
   ```sh
-  NEXT_PUBLIC_OPTIQ_URL="https://cg.optimizely.com"
+  NEXT_PUBLIC_OPTIQ_URL="https://cg.optimizely.com/content/v2"
   NEXT_PUBLIC_OPTIQ_AUTH="auth-key"
   ```
 - Restore node packages
