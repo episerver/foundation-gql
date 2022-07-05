@@ -4,7 +4,6 @@ import {
   Flex,
   Text,
   IconButton,
-  Button,
   Stack,
   Collapse,
   Icon,
@@ -20,12 +19,13 @@ import { NextLink } from "../NextLink"
 
 import { LocaleSelector } from "./LocaleSelector"
 
-import { Route } from "client/sitemap"
+import { SiteLocales } from "client/hooks/optimizely/useRouter"
+import { Route } from "client/routeMap"
 
 type NavbarProps = {
   home: Route
   path: string
-  locales: LanguageModel[]
+  locales: SiteLocales
 }
 
 const DesktopNav: React.FC<NavbarProps> = ({ home, path }) => {
@@ -35,7 +35,7 @@ const DesktopNav: React.FC<NavbarProps> = ({ home, path }) => {
 
   return (
     <Stack direction={"row"} spacing={4} align={"center"}>
-      {home.subRoutes?.map((route) => (
+      {home.subRoutes.map((route) => (
         <Box key={route.name}>
           <Popover trigger={"hover"} placement={"bottom-start"}>
             <PopoverTrigger>
@@ -55,7 +55,7 @@ const DesktopNav: React.FC<NavbarProps> = ({ home, path }) => {
               </NextLink>
             </PopoverTrigger>
 
-            {route.subRoutes && route.subRoutes.length > 0 && (
+            {route.subRoutes.length > 0 && (
               <PopoverContent
                 border={0}
                 boxShadow={"xl"}
@@ -65,8 +65,8 @@ const DesktopNav: React.FC<NavbarProps> = ({ home, path }) => {
                 minW={"sm"}
               >
                 <Stack maxH={400} overflow={"auto"}>
-                  {route.subRoutes.map((child) => (
-                    <DesktopSubNav key={child.name} {...child} />
+                  {route.subRoutes.map((sub) => (
+                    <DesktopSubNav key={sub.name} route={sub} />
                   ))}
                 </Stack>
               </PopoverContent>
@@ -78,7 +78,7 @@ const DesktopNav: React.FC<NavbarProps> = ({ home, path }) => {
   )
 }
 
-const DesktopSubNav: React.FC<Route> = ({ name, path }) => {
+const DesktopSubNav: React.FC<{ route: Route }> = ({ route: { name, path } }) => {
   return (
     <NextLink
       href={path}
@@ -99,7 +99,7 @@ const DesktopSubNav: React.FC<Route> = ({ name, path }) => {
           transition={"all .3s ease"}
           transform={"translateX(-10px)"}
           opacity={0}
-          _groupHover={{ opacity: "100%", transform: "translateX(0)" }}
+          _groupHover={{ opacity: "full", transform: "translateX(0)" }}
           justify={"flex-end"}
           align={"center"}
           flex={1}
@@ -114,18 +114,18 @@ const DesktopSubNav: React.FC<Route> = ({ name, path }) => {
 const MobileNav: React.FC<NavbarProps> = ({ home }) => {
   return (
     <Stack bg={useColorModeValue("white", "gray.800")} p={4} display={{ md: "none" }}>
-      {home.subRoutes?.map((route) => (
-        <MobileNavItem key={route.path} {...route} />
+      {home.subRoutes.map((route) => (
+        <MobileNavItem key={route.path} route={route} />
       ))}
     </Stack>
   )
 }
 
-const MobileNavItem: React.FC<Route> = ({ name, path, subRoutes }) => {
+const MobileNavItem: React.FC<{ route: Route }> = ({ route: { name, path, subRoutes } }) => {
   const { isOpen, onToggle } = useDisclosure()
 
   return (
-    <Stack spacing={4} onClick={subRoutes && onToggle}>
+    <Stack spacing={4} onClick={subRoutes.length ? onToggle : undefined}>
       <Flex
         py={2}
         as={NextLink}
@@ -159,7 +159,7 @@ const MobileNavItem: React.FC<Route> = ({ name, path, subRoutes }) => {
           borderColor={useColorModeValue("gray.200", "gray.700")}
           align={"start"}
         >
-          {subRoutes?.map(({ name, path }) => (
+          {subRoutes.map(({ name, path }) => (
             <NextLink key={path} py={2} href={path}>
               {name}
             </NextLink>
@@ -186,12 +186,7 @@ export const Navbar: React.FC<NavbarProps> = (props) => {
         borderColor={useColorModeValue("gray.200", "gray.900")}
         align={"center"}
       >
-        <Flex
-          flex={{ base: 1, md: "auto" }}
-          ml={{ base: -2 }}
-          display={{ base: "flex", md: "none" }}
-          align={"center"}
-        >
+        <Flex flex={0} ml={{ base: -2 }} display={{ base: "flex", md: "none" }} align={"center"}>
           <IconButton
             onClick={onToggle}
             icon={isOpen ? <CloseIcon w={3} h={3} /> : <HamburgerIcon w={5} h={5} />}
@@ -199,8 +194,8 @@ export const Navbar: React.FC<NavbarProps> = (props) => {
             aria-label={"Toggle Navigation"}
           />
         </Flex>
-        <Flex flex={{ base: 1 }} justify={{ base: "center", md: "start" }}>
-          <NextLink href={props.home.path || "#"}>
+        <Flex justify={{ base: "center", md: "start" }} w={"full"} align={"center"}>
+          <NextLink href={props.home.path || "#"} mx={{ base: "auto", md: 0 }}>
             <Text
               textAlign={useBreakpointValue({ base: "center", md: "left" })}
               fontFamily={"heading"}
@@ -211,16 +206,21 @@ export const Navbar: React.FC<NavbarProps> = (props) => {
             </Text>
           </NextLink>
 
-          <Flex display={{ base: "none", md: "flex" }} ml={10} align={"center"}>
+          <Flex
+            display={{ base: "none", md: "flex" }}
+            align={"center"}
+            alignSelf={"normal"}
+            overflowX={"auto"}
+            px={5}
+            mr={"auto"}
+          >
             <DesktopNav {...props} />
           </Flex>
-        </Flex>
 
-        {props.locales && (
-          <Stack mr={10}>
+          <Flex pl={{ base: 0, md: 5 }}>
             <LocaleSelector locales={props.locales} />
-          </Stack>
-        )}
+          </Flex>
+        </Flex>
 
         {/* <Stack flex={{ base: 1, md: 0 }} justify={"flex-end"} direction={"row"} spacing={6}>
           <Button as={"a"} fontSize={"sm"} fontWeight={400} variant={"link"} href={"#"}>

@@ -1,41 +1,11 @@
-#import "./TeaserBlockFragment.gql"
-#import "./PageListBlockFragment.gql"
+#import "./BlockFragment.gql"
 
 fragment ContainerBlockFragment on ContainerBlock {
   MainContentArea {
     ContentLink {
       GuidValue
       Expanded {
-        __typename
-        Name
-        ContentType
-        ContentLink {
-          GuidValue
-        }
-
-        ... on TeaserBlock {
-          ...TeaserBlockFragment
-        }
-
-        ... on TextBlock {
-          MainBody
-        }
-
-        ... on ImageMediaData {
-          Url
-          AltText
-        }
-
-        ... on PageListBlock {
-          ...PageListBlockFragment
-        }
-
-        ... on FormContainerBlock {
-          Name
-          ContentLink {
-            GuidValue
-          }
-        }
+        ...BlockFragment
       }
     }
   }

@@ -1,0 +1,16 @@
+#import "./fragments/ContentFragment.gql"
+
+query FolderPageQuery($ancestors: String, $limit: Int = 6) {
+  Content(
+    where: { Ancestors: { eq: $ancestors } }
+    orderBy: { StartPublish: DESC }
+    limit: $limit
+  ) {
+    items {
+      ...ContentFragment
+      ... on TagPage {
+        MainBody
+      }
+    }
+  }
+}

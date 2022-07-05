@@ -1,9 +1,10 @@
-fragment ContentFragment on Content {
+fragment ContentFragment on IContent {
   ContentLink {
-    Id
+    GuidValue
   }
   Name
-  ContentType
   RouteSegment
+  Url
   RelativePath
+  ContentType
 }

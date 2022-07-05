@@ -2,24 +2,25 @@ import { useRouter as useNextRouter } from "next/router"
 
 import { DEFAULT_LOCALE } from "client/constants"
 
+export type SiteLocales = Dict<string>
+
 const defaults = {
   locale: DEFAULT_LOCALE,
 }
 
-export const useRouter = (config?: Partial<typeof defaults>) => {
+export const useRouter = () => {
   const router = useNextRouter()
   const page = router.query.page as string[]
-  const cfg = { ...config, ...defaults }
-  const [locale = cfg.locale.Name, ...route] = page || []
+  const config = defaults
+  const [locale = config.locale.Name, ...route] = page || []
+
   const segments = route.filter((x) => x)
-  const getPath = (locale: string) => ["", locale, ...segments].join("/")
-  const getLocale = () => locale.toUpperCase()
+  const getPath = (_locale = locale) => ["", _locale, ...segments].join("/")
 
   return {
     router,
-    locale: getLocale(),
-    path: getPath(locale),
-    getLocale,
+    locale: locale.toUpperCase(),
+    path: getPath(),
     getPath,
   }
 }

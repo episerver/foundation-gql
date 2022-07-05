@@ -1,0 +1,13 @@
+#import "./fragments/StandardPageFragment.gql"
+
+query PageListQuery($ancestors: String, $limit: Int) {
+  StandardPage(
+    where: { Ancestors: { eq: $ancestors } }
+    orderBy: { StartPublish: DESC }
+    limit: $limit
+  ) {
+    items {
+      ...StandardPageFragment
+    }
+  }
+}

@@ -1,16 +1,13 @@
+#import "./fragments/ContentFragment.gql"
+
 query SearchQuery($text: String) {
-  Content(where: { _fulltext: { like: $text } }) {
+  Content(where: { _fulltext: { like: $text }, ContentType: { eq: "Page" } }) {
     items {
-      ContentLink {
-        GuidValue
-      }
+      ...ContentFragment
       Language {
         DisplayName
         Name
       }
-      RelativePath
-      ContentType
-      Name
       _fulltext
     }
   }

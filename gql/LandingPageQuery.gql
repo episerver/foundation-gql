@@ -1,0 +1,25 @@
+#import "./fragments/ContentFragment.gql"
+#import "./fragments/BlockFragment.gql"
+
+query LandingPageQuery($id: String) {
+  LandingPage(ids: [$id]) {
+    items {
+      TopContentArea {
+        ContentLink {
+          Expanded {
+            ...ContentFragment
+            ...BlockFragment
+          }
+        }
+      }
+      MainContentArea {
+        ContentLink {
+          Expanded {
+            ...ContentFragment
+            ...BlockFragment
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,10 @@
+#import "./ContentFragment.gql"
+
+fragment StandardPageFragment on StandardPage {
+  ...ContentFragment
+  PageImage {
+    Url
+  }
+  TeaserText
+  TeaserButtonText
+}

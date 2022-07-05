@@ -1,19 +1,20 @@
-query StandardPageQuery($ancestors: String, $limit: Int) {
-  StandardPage(
-    where: { Ancestors: { eq: $ancestors } }
-    orderBy: { StartPublish: DESC }
-    limit: $limit
-  ) {
+#import "./fragments/StandardPageFragment.gql"
+
+query StandardPageQuery($id: String) {
+  StandardPage(ids: [$id]) {
     items {
-      Name
-      ContentLink {
-        GuidValue
+      ...StandardPageFragment
+      MainBody
+      MainContentArea {
+        ContentLink {
+          Expanded {
+            ContentType
+            ... on StandardPage {
+              ...StandardPageFragment
+            }
+          }
+        }
       }
-      PageImage {
-        Url
-      }
-      RelativePath
-      TeaserText
     }
   }
 }

@@ -1,7 +1,0 @@
-fragment TeaserBlockFragment on TeaserBlock {
-  Text
-  Heading
-  Image {
-    Url
-  }
-}

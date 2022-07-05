@@ -1,0 +1,36 @@
+#import "./ContentFragment.gql"
+
+fragment BlockFragment on IContent {
+  ...ContentFragment
+
+  ... on TeaserBlock {
+    Text
+    Heading
+    Image {
+      Url
+    }
+  }
+
+  ... on TextBlock {
+    MainBody
+  }
+
+  ... on ImageMediaData {
+    Url
+    AltText
+  }
+
+  ... on PageListBlock {
+    Heading
+    Count
+    Roots {
+      ContentLink {
+        GuidValue
+      }
+    }
+  }
+
+  ... on FormContainerBlock {
+    Name
+  }
+}

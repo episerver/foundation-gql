@@ -4,6 +4,12 @@ type ContentLink = {
   }
 }
 
+type ParentLink = {
+  ParentLink: {
+    GuidValue: string
+  }
+}
+
 type Content = ContentLink & {
   Name: string
   RouteSegment: string
@@ -56,6 +62,14 @@ type FullText = {
 
 type Items<T> = {
   items: T[]
+}
+
+type Cursor = {
+  cursor: string
+}
+
+type Total = {
+  total: number
 }
 
 type Facets<T extends { [k: string]: Bucket[] }> = {

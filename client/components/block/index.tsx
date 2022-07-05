@@ -1,4 +1,4 @@
-import { Flex, Image } from "@chakra-ui/react"
+import { Divider, Flex, Image } from "@chakra-ui/react"
 
 import { ContainerBlock } from "./ContainerBlock"
 import { FormContainerBlock } from "./FormContainerBlock"
@@ -19,10 +19,11 @@ export const Block: BlockComponent<Block> = ({ data }) => {
   const fallback = data as Content
 
   return (
-    <Flex color="gray" direction={"column"}>
+    <Flex color="gray" direction={"column"} m={5}>
       <h1>{fallback.Name}</h1>
       <p>[{fallback.ContentType.join(", ")}]</p>
       <p>{fallback.ContentLink.GuidValue}</p>
+      <Divider pt={2} />
     </Flex>
   )
 }

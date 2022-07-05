@@ -1,9 +1,20 @@
 // Layout
-type NavigationItem = Content & ExistingLanguages & Children<{ Content: Items<NavigationItem> }>
+type NavigationItem = Content & ExistingLanguages & ParentLink
+type IRoute = {
+  id: string
+  parentId: string
+  contentType?: string
+  name: string
+  path: string
+  language: LanguageModel[]
+}
+type RouteProps = {
+  route: IRoute | undefined
+}
 
 // Location
 type LocationListPage = Items<LocationListPageItem>
-type LocationItemPage = Items<LocationItem>
+type LocationItemPage = Items<LocationItem & { MainBody: string }>
 type LocationItemResult = Items<LocationItem> & Facets<LocationFacets> & Total
 
 type LocationItem = Content & {
@@ -29,7 +40,7 @@ type LocationFilter = {
   continents: string[]
   minAvgTemp: number
   maxAvgTemp: number
-  fullTextSearch: string
+  searchTerm: string
   orderBy: Partial<LocationSort>
 }
 
@@ -42,4 +53,28 @@ type LocationFacets = {
 type LocationSort = {
   Name: OrderBy
   AvgTemp: OrderBy
+}
+
+// Standard
+type PageListItem = ContentLink & {
+  Name: string
+  PageImage: {
+    Url: string
+  }
+  RelativePath: string
+  TeaserText: string
+  TeaserButtonText: string
+}
+
+type PageListResult = {
+  StandardPage: Items<PageListItem>
+}
+
+type StandardPageItem = PageListItem & {
+  MainBody: string
+  MainContentArea?: ContentAreaItem<PageListItem>[]
+}
+
+type StandardPageResult = {
+  StandardPage: Items<StandardPageItem>
 }

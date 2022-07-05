@@ -1,0 +1,12 @@
+#import "./fragments/ContentFragment.gql"
+
+query BlogListPageQuery($id: String) {
+  Content(where: { Ancestors: { eq: $id } }) {
+    items {
+      ...ContentFragment
+      ... on BlogListPage {
+        MainBody
+      }
+    }
+  }
+}

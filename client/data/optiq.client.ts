@@ -8,13 +8,17 @@ import {
 } from "@apollo/client"
 import { onError } from "@apollo/client/link/error"
 
+import { cursorPagination } from "./cursorPagination"
+
+import possibleTypes from "possibleTypes.json"
+
 class OptiqClient extends ApolloClient<NormalizedCacheObject> {
   constructor(url?: string, auth?: string) {
     if (!url) throw new Error("url is required")
     if (!auth) throw new Error("auth is required")
 
     const httpLink = new HttpLink({
-      uri: `${url}/content/v2`,
+      uri: url,
     })
 
     const errorLink = onError(({ graphQLErrors, networkError }) => {
@@ -37,11 +41,13 @@ class OptiqClient extends ApolloClient<NormalizedCacheObject> {
     super({
       link: from([errorLink, authMiddleware, httpLink]),
       cache: new InMemoryCache({
-        dataIdFromObject(response: any, { typename }) {
-          const id = response.Id || response.ContentLink?.Id
-          return typename && id //
-            ? `${typename}:${id}`
-            : false
+        possibleTypes,
+        typePolicies: {
+          Query: {
+            fields: {
+              Content: cursorPagination(),
+            },
+          },
         },
       }),
     })

@@ -1,13 +1,15 @@
 type BlockComponent<T> = React.FC<{ data: T }>
 
-type Block =
-  | HeroBlock
-  | TeaserBlock
-  | TextBlock
-  | ContainerBlock
-  | ImageMediaData
-  | PageListBlock
-  | FormContainerBlock
+type Block = Content &
+  (
+    | HeroBlock
+    | TeaserBlock
+    | TextBlock
+    | ContainerBlock
+    | ImageMediaData
+    | PageListBlock
+    | FormContainerBlock
+  )
 
 type HeroBlock = {
   __typename: "HeroBlock"
@@ -24,7 +26,7 @@ type TeaserBlock = {
   __typename: "TeaserBlock"
   Text: string
   Heading: string
-  Image: {
+  Image?: {
     Url: string
   }
 }

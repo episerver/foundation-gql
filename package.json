@@ -6,7 +6,8 @@
     "dev": "NODE_OPTIONS='--inspect' next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "schema:update": "node scripts/schema-update.js"
   },
   "dependencies": {
     "@apollo/client": "^3.5.9",
@@ -24,6 +25,8 @@
   "devDependencies": {
     "@types/node": "17.0.21",
     "@types/react": "17.0.39",
+    "cross-fetch": "^3.1.5",
+    "dotenv": "^16.0.1",
     "eslint": "8.10.0",
     "eslint-config-next": "12.1.0",
     "eslint-config-prettier": "^8.4.0",

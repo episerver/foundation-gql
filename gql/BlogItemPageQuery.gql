@@ -1,0 +1,13 @@
+#import "./fragments/ContentFragment.gql"
+
+query BlogItemPageQuery($id: String) {
+  BlogItemPage(ids: [$id]) {
+    items {
+      ...ContentFragment
+      PageImage {
+        Url
+      }
+      MainBody
+    }
+  }
+}

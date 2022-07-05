@@ -2,15 +2,15 @@
 
 query LocationListQuery(
   $locale: [Locale] = [EN]
+  $path: String
   $continents: [String] = []
   $countries: [String] = []
   $minAvgTemp: Float = 0
   $maxAvgTemp: Float = 30
   $orderBy: LocationItemPageOrderByInput
-  $fullTextSearch: String = ""
-  $path: String
+  $searchTerm: String = ""
 ) {
-  LocationListPage(locale: $locale, where: { Url: { like: $path } }) {
+  LocationListPage(locale: $locale, where: { RelativePath: { eq: $path } }) {
     items {
       Name
       MainBody
@@ -21,7 +21,7 @@ query LocationListQuery(
             AvgTemp: { gte: $minAvgTemp, lte: $maxAvgTemp }
             Country: { in: $countries }
             Continent: { in: $continents }
-            _fulltext: { contains: $fullTextSearch }
+            _fulltext: { like: $searchTerm }
           }
           orderBy: $orderBy
         ) {

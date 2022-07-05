@@ -80,7 +80,7 @@ const RangeFacet: React.FC<RangeFacetProps> = ({
   return (
     <VStack>
       {showPits && (
-        <HStack justify={"space-between"} align={"flex-end"} w={"100%"} pl={3}>
+        <HStack justify={"space-between"} align={"flex-end"} w={"full"} pl={3}>
           {values.map((val) => (
             <Tooltip key={val.name} hasArrow label={val.count} bg="orange.500" placement="top">
               <Box bg="orange.100" w={100} h={`${val.count * maxBucketVal}px`} />
@@ -110,7 +110,7 @@ const RangeFacet: React.FC<RangeFacetProps> = ({
           <Box color="tomato" />
         </RangeSliderThumb>
       </RangeSlider>
-      <HStack justify={"space-between"} w={"100%"}>
+      <HStack justify={"space-between"} w={"full"}>
         <Input placeholder="min" size={"sm"} w={100} value={minVal} disabled />
         <Input placeholder="max" size={"sm"} w={100} value={maxVal} disabled />
       </HStack>

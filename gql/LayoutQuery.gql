@@ -1,12 +1,14 @@
 #import "./fragments/ContentFragment.gql"
 
-query LayoutQuery($locale: [Locale] = [EN]) {
-  HomePage(locale: $locale, where: { ContentType: { eq: "Page" }, RouteSegment: { eq: "home" } }) {
+query LayoutQuery($locale: [Locale] = [EN], $cursor: String = "", $limit: Int! = 100) {
+  Content(locale: $locale, where: { ContentType: { eq: "Page" } }, cursor: $cursor, limit: $limit) {
+    total
+    cursor
     items {
-      Name
-      RouteSegment
-      RelativePath
-      ContentType
+      ...ContentFragment
+      ParentLink {
+        GuidValue
+      }
       ExistingLanguages {
         DisplayName
         Name
@@ -14,20 +16,6 @@ query LayoutQuery($locale: [Locale] = [EN]) {
       MasterLanguage {
         DisplayName
         Name
-      }
-      _children {
-        Content {
-          items {
-            ...ContentFragment
-            _children {
-              Content {
-                items {
-                  ...ContentFragment
-                }
-              }
-            }
-          }
-        }
       }
     }
   }

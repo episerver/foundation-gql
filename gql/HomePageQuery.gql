@@ -1,3 +1,4 @@
+#import "./fragments/ContentFragment.gql"
 #import "./fragments/ContainerBlockFragment.gql"
 
 query HomePageQuery($locale: [Locale] = [EN]) {
@@ -11,11 +12,8 @@ query HomePageQuery($locale: [Locale] = [EN]) {
       MainContentArea {
         ContentLink {
           Expanded {
-            Name
-            ContentType
-            ContentLink {
-              GuidValue
-            }
+            ...ContentFragment
+
             ... on HeroBlock {
               BlockRatio
               BackgroundImage {

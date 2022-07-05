@@ -1,0 +1,9 @@
+query TagPageQuery($id: String) {
+  TagPage(ids: [$id]) {
+    items {
+      Name
+      MainIntro
+      MainBody
+    }
+  }
+}
