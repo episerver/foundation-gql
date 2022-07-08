@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "schema:update": "node scripts/schema-update.js"
+    "update:types": "node possibleTypes.update.js"
   },
   "dependencies": {
     "@apollo/client": "^3.5.9",
