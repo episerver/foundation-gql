@@ -18,9 +18,14 @@ Suggested apps and tools for better local app development
 
 ## Config
 
-- Create `.env.local` file on the root
+- Create `.env.local` file on the root with following content
 
-  > That file is required to communicate with `Content Graph` service. You can copy `.env.example` file as `.env.local` with proper values.
+  ```sh
+  NEXT_PUBLIC_OPTIQ_URL="https://cg.optimizely.com/content/v2"
+  NEXT_PUBLIC_OPTIQ_AUTH="your-auth-token"
+  ```
+
+  > You can copy `.env.example` file as `.env.local` with proper values.
 
 - Run `npm install`
 
