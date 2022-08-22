@@ -31,6 +31,8 @@ Suggested apps and tools for better local app development
 ## Develop
 
 - Run `npm run dev` command
+- You can test your graphql queries through interactive GraphiQL page
+  https://cg.optimizely.com/app/graphiql?auth=your-auth-key
 
 ## Deploy
 
