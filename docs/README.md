@@ -17,3 +17,4 @@ Content Graph is a new SaaS solution to consume Optimizely DXP data via GraphQL 
 ## Implementation
 
 - [Layout](/docs/guides/layout.md)
+- [LocationList](/docs/guides/location-list.md)
