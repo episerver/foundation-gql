@@ -2,6 +2,8 @@
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fepiserver%2Ffoundation-gql&env=NEXT_PUBLIC_OPTIQ_URL,NEXT_PUBLIC_OPTIQ_AUTH&project-name=foundation&repo-name=foundation-gql&demo-title=Foundation%20%7C%20Content%20Graph&demo-description=Optimizely%20CMS%20foundation%20demo%20implementation%20with%20Content%20Graph&demo-url=https%3A%2F%2Ffoundation-gql.vercel.app&demo-image=https%3A%2F%2Fi.imgur.com%2FOKJvLdB.png)
+
 ## Demo
 
 ### https://foundation-gql.vercel.app/
@@ -13,7 +15,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 ### Environment
 
 - VSCode
-- VSCode extension: [Apollo GraphQL ](https://marketplace.visualstudio.com/items?itemName=apollographql.vscode-apollo) (optional)
+- VSCode extension: [Apollo GraphQL](https://marketplace.visualstudio.com/items?itemName=apollographql.vscode-apollo) (optional)
 - [Node.js 12.22.0](https://nodejs.org/) or later
 - Chrome extension: [GraphQL Network Inspector](https://chrome.google.com/webstore/detail/graphql-network-inspector/ndlbedplllcgconngcnfmkadhokfaaln) (optional)
 
