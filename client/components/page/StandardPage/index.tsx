@@ -36,8 +36,8 @@ export default function StandardPage({ route }: RouteProps) {
       <XHTMLContent pb={10}>{content?.MainBody}</XHTMLContent>
 
       <VStack spacing={4} align="stretch">
-        {content?.MainContentArea?.map(({ ContentLink: { GuidValue, Expanded } }) => (
-          <LinkBox key={GuidValue} height={500} color={"white"}>
+        {content?.MainContentArea?.map(({ ContentLink: { GuidValue, Expanded } }, i) => (
+          <LinkBox key={`${i}.${GuidValue}`} height={500} color={"white"}>
             <LinkOverlay href={Expanded.RelativePath} as={NextLink} />
             <VStack
               spacing={4}

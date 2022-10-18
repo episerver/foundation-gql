@@ -18,6 +18,7 @@ import {
 import { NextLink } from "../NextLink"
 
 import { LocaleSelector } from "./LocaleSelector"
+import { LoginButton } from "./LoginButton"
 
 import { SiteLocales } from "client/hooks/optimizely/useRouter"
 import { Route } from "client/routeMap"
@@ -219,6 +220,7 @@ export const Navbar: React.FC<NavbarProps> = (props) => {
 
           <Flex pl={{ base: 0, md: 5 }}>
             <LocaleSelector locales={props.locales} />
+            <LoginButton />
           </Flex>
         </Flex>
 
