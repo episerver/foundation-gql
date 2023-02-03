@@ -1,7 +1,7 @@
 #import "./fragments/ContentFragment.gql"
 #import "./fragments/ContainerBlockFragment.gql"
 
-query HomePageQuery($locale: [Locale] = [EN]) {
+query HomePageQuery($locale: [Locales] = [en]) {
   HomePage(locale: $locale, where: { Name: { eq: "Epi Health" } }) {
     items {
       Name

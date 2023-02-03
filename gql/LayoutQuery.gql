@@ -1,6 +1,6 @@
 #import "./fragments/ContentFragment.gql"
 
-query LayoutQuery($locale: [Locale] = [EN], $cursor: String = "", $limit: Int! = 100) {
+query LayoutQuery($locale: [Locales] = [en], $cursor: String = "", $limit: Int! = 100) {
   Content(locale: $locale, where: { ContentType: { eq: "Page" } }, cursor: $cursor, limit: $limit) {
     total
     cursor

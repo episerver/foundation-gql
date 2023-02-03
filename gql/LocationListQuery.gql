@@ -1,7 +1,7 @@
 #import "./fragments/LocationItemFragment.gql"
 
 query LocationListQuery(
-  $locale: [Locale] = [EN]
+  $locale: [Locales] = [en]
   $path: String
   $continents: [String] = []
   $countries: [String] = []
