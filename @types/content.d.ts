@@ -5,7 +5,7 @@ type ContentLink = {
 }
 
 type ParentLink = {
-  ParentLink: {
+  ParentLink?: {
     GuidValue: string
   }
 }

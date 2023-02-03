@@ -5,7 +5,7 @@ export class Route implements IRoute {
   constructor(private navItem: NavigationItem) {}
 
   id = this.navItem.ContentLink.GuidValue
-  parentId = this.navItem.ParentLink.GuidValue
+  parentId = this.navItem.ParentLink?.GuidValue
   contentType = getContentType(this.navItem.ContentType)
   name = this.navItem.Name
   path = this.navItem.RelativePath
@@ -53,8 +53,10 @@ export class RouteMap {
 
   private bindSubRoutes(routeMap: Dict<Route>) {
     Object.values(routeMap).forEach((route) => {
-      const parent = routeMap[route.parentId]
-      route.parent = parent
+      if (route.parentId) {
+        const parent = routeMap[route.parentId]
+        route.parent = parent
+      }
     })
   }
 

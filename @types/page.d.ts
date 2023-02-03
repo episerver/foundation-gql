@@ -2,7 +2,7 @@
 type NavigationItem = Content & ExistingLanguages & ParentLink
 type IRoute = {
   id: string
-  parentId: string
+  parentId?: string
   contentType?: string
   name: string
   path: string
