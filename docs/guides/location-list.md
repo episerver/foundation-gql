@@ -17,7 +17,7 @@
 
 ```gql
 query LocationListQuery(
-  $locale: [Locale] = [EN]
+  $locale: [Locales] = [en]
   $path: String
   $continents: [String] = []
   $countries: [String] = []
@@ -39,7 +39,7 @@ query LocationListQuery(
 
 ```gql
 query LocationListQuery(
-  $locale: [Locale] = [EN]
+  $locale: [Locales] = [en]
   $path: String
   $continents: [String] = []
   $countries: [String] = []
@@ -104,7 +104,7 @@ The new code should be:
 #import "./fragments/LocationItemFragment.gql"
 
 query LocationListQuery(
-  $locale: [Locale] = [EN]
+  $locale: [Locales] = [en]
   $path: String
   $continents: [String] = []
   $countries: [String] = []
@@ -145,7 +145,7 @@ query LocationListQuery(
 #import "./fragments/LocationItemFragment.gql"
 
 query LocationListQuery(
-  $locale: [Locale] = [EN]
+  $locale: [Locales] = [en]
   $path: String
   $continents: [String] = []
   $countries: [String] = []
