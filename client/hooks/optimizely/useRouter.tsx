@@ -19,7 +19,7 @@ export const useRouter = () => {
 
   return {
     router,
-    locale: locale.toUpperCase(),
+    locale,
     path: getPath(),
     getPath,
   }

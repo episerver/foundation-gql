@@ -26,7 +26,7 @@ All relative paths of contents are fetched at once on the load of site. After th
   ```gql
   #import "./fragments/ContentFragment.gql"
 
-  query LayoutQuery($locale: [Locale] = [EN], $cursor: String = "", $limit: Int! = 100) {
+  query LayoutQuery($locale: [Locales] = [en], $cursor: String = "", $limit: Int! = 100) {
     Content(
       locale: $locale
       where: { ContentType: { eq: "Page" } }
