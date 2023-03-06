@@ -36,11 +36,11 @@ const DesktopNav: React.FC<NavbarProps> = ({ home, path }) => {
   return (
     <Stack direction={"row"} spacing={4} align={"center"}>
       {home.subRoutes.map((route) => (
-        <Box key={route.name}>
+        <Box key={route.Name}>
           <Popover trigger={"hover"} placement={"bottom-start"}>
             <PopoverTrigger>
               <NextLink
-                href={route.path ?? "#"}
+                href={route.RelativePath ?? "#"}
                 p={2}
                 fontSize={"sm"}
                 fontWeight={500}
@@ -48,10 +48,10 @@ const DesktopNav: React.FC<NavbarProps> = ({ home, path }) => {
                 _hover={{
                   color: linkHoverColor,
                 }}
-                bg={route.path === path ? "gray.200" : "transparent"}
+                bg={route.RelativePath === path ? "gray.200" : "transparent"}
                 borderRadius={4}
               >
-                {route.name}
+                {route.Name}
               </NextLink>
             </PopoverTrigger>
 
@@ -66,7 +66,7 @@ const DesktopNav: React.FC<NavbarProps> = ({ home, path }) => {
               >
                 <Stack maxH={400} overflow={"auto"}>
                   {route.subRoutes.map((sub) => (
-                    <DesktopSubNav key={sub.name} route={sub} />
+                    <DesktopSubNav key={sub.Name} route={sub} />
                   ))}
                 </Stack>
               </PopoverContent>
@@ -78,10 +78,10 @@ const DesktopNav: React.FC<NavbarProps> = ({ home, path }) => {
   )
 }
 
-const DesktopSubNav: React.FC<{ route: Route }> = ({ route: { name, path } }) => {
+const DesktopSubNav: React.FC<{ route: Route }> = ({ route: { Name, RelativePath } }) => {
   return (
     <NextLink
-      href={path}
+      href={RelativePath ?? ''}
       role={"group"}
       display={"block"}
       p={2}
@@ -91,9 +91,9 @@ const DesktopSubNav: React.FC<{ route: Route }> = ({ route: { name, path } }) =>
       <Stack direction={"row"} align={"center"}>
         <Box>
           <Text transition={"all .3s ease"} _groupHover={{ color: "pink.400" }} fontWeight={500}>
-            {name}
+            {Name}
           </Text>
-          <Text fontSize={"sm"}>{name}</Text>
+          <Text fontSize={"sm"}>{Name}</Text>
         </Box>
         <Flex
           transition={"all .3s ease"}
@@ -115,13 +115,13 @@ const MobileNav: React.FC<NavbarProps> = ({ home }) => {
   return (
     <Stack bg={useColorModeValue("white", "gray.800")} p={4} display={{ md: "none" }}>
       {home.subRoutes.map((route) => (
-        <MobileNavItem key={route.path} route={route} />
+        <MobileNavItem key={route.RelativePath} route={route} />
       ))}
     </Stack>
   )
 }
 
-const MobileNavItem: React.FC<{ route: Route }> = ({ route: { name, path, subRoutes } }) => {
+const MobileNavItem: React.FC<{ route: Route }> = ({ route: { Name, RelativePath, subRoutes } }) => {
   const { isOpen, onToggle } = useDisclosure()
 
   return (
@@ -129,7 +129,7 @@ const MobileNavItem: React.FC<{ route: Route }> = ({ route: { name, path, subRou
       <Flex
         py={2}
         as={NextLink}
-        href={path}
+        href={RelativePath}
         justify={"space-between"}
         align={"center"}
         _hover={{
@@ -137,7 +137,7 @@ const MobileNavItem: React.FC<{ route: Route }> = ({ route: { name, path, subRou
         }}
       >
         <Text fontWeight={600} color={useColorModeValue("gray.600", "gray.200")}>
-          {name}
+          {Name}
         </Text>
         {subRoutes && (
           <Icon
@@ -159,9 +159,9 @@ const MobileNavItem: React.FC<{ route: Route }> = ({ route: { name, path, subRou
           borderColor={useColorModeValue("gray.200", "gray.700")}
           align={"start"}
         >
-          {subRoutes.map(({ name, path }) => (
-            <NextLink key={path} py={2} href={path}>
-              {name}
+          {subRoutes.map(({ Name, RelativePath }) => (
+            <NextLink key={RelativePath} py={2} href={RelativePath ?? ''}>
+              {Name}
             </NextLink>
           ))}
         </Stack>
@@ -195,14 +195,14 @@ export const Navbar: React.FC<NavbarProps> = (props) => {
           />
         </Flex>
         <Flex justify={{ base: "center", md: "start" }} w={"full"} align={"center"}>
-          <NextLink href={props.home.path || "#"} mx={{ base: "auto", md: 0 }}>
+          <NextLink href={props.home.RelativePath || "#"} mx={{ base: "auto", md: 0 }}>
             <Text
               textAlign={useBreakpointValue({ base: "center", md: "left" })}
               fontFamily={"heading"}
               color={useColorModeValue("gray.800", "white")}
               fontSize={"x-large"}
             >
-              {props.home.name}
+              {props.home.Name}
             </Text>
           </NextLink>
 

@@ -1,7 +1,7 @@
 #import "./fragments/StandardPageFragment.gql"
 
-query StandardPageQuery($id: String) {
-  StandardPage(ids: [$id]) {
+query StandardPageQuery($locale: [Locales] = en $id: String) {
+  StandardPage(locale: $locale, ids: [$id]) {
     items {
       ...StandardPageFragment
       MainBody

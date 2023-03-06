@@ -3,7 +3,7 @@ import { ChakraProvider } from "@chakra-ui/react"
 
 import { ClientOnly } from "./components/shared/ClientOnly"
 import { Layout } from "./components/shared/layout/Layout"
-import { optiqClient } from "./data/optiq.client"
+import { contentGraphClient } from "./data/contentgraph.client"
 
 import { theme } from "styles/theme"
 
@@ -11,7 +11,7 @@ export const App: React.FC = () => {
   return (
     <ClientOnly>
       <ChakraProvider theme={theme}>
-        <ApolloProvider client={optiqClient}>
+        <ApolloProvider client={contentGraphClient}>
           <Layout />
         </ApolloProvider>
       </ChakraProvider>

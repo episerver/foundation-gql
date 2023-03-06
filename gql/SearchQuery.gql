@@ -1,7 +1,7 @@
 #import "./fragments/ContentFragment.gql"
 
-query SearchQuery($text: String) {
-  Content(where: { _fulltext: { like: $text }, ContentType: { eq: "Page" } }) {
+query SearchQuery($locale: [Locales] = en $text: String) {
+  Content(locale: $locale, where: { _fulltext: { contains: $text }, ContentType: { eq: "Page" } }) {
     items {
       ...ContentFragment
       Language {

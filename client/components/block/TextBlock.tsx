@@ -1,14 +1,15 @@
 import { Text } from "@chakra-ui/react"
+import { TextBlock } from "generated"
 
 import { XHTMLContent } from "../shared/content/XHTMLContent"
 
-export const TextBlock: BlockComponent<TextBlock> = ({ data }) => {
+export const TextBlockComponent: React.FC<{data: TextBlock}> = ({data}) => {
   return (
     <Text
-      color={data.MainBody ? "inherit" : "red"}
-      border={data.MainBody ? "inherit" : "1px solid red"}
+      color={data?.MainBody ? "inherit" : "red"}
+      border={data?.MainBody ? "inherit" : "1px solid red"}
     >
-      <XHTMLContent>{data.MainBody || "Missing TextBlock data"}</XHTMLContent>
+      <XHTMLContent>{data?.MainBody ?? ''}</XHTMLContent>
     </Text>
   )
 }

@@ -66,11 +66,12 @@ All relative paths of contents are fetched at once on the load of site. After th
     const [loading, setLoading] = useState(false)
     const [routeMap, setRouteMap] = useState<RouteMap>()
     const { path, locale } = useRouter()
-    const { data, fetchMore } = useQuery<LayoutQueryResult>(LayoutQuery, {
-      variables: {
-        locale,
-      },
-    })
+
+    const { data } = useLayoutQueryQuery({
+    variables: {
+      locale: locale as Locales
+    }
+  });
   }
   ```
 

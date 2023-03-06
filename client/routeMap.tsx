@@ -1,15 +1,20 @@
+import { IContent } from "generated"
 import { getContentType } from "./utils/content.utils"
 
-export class Route implements IRoute {
-  private routeMap: Dict<Route> = {}
-  constructor(private navItem: NavigationItem) {}
+export type RouteProps = {
+  route: IContent | undefined
+}
 
-  id = this.navItem.ContentLink.GuidValue
-  parentId = this.navItem.ParentLink.GuidValue
-  contentType = getContentType(this.navItem.ContentType)
-  name = this.navItem.Name
-  path = this.navItem.RelativePath
-  language = this.navItem.ExistingLanguages
+export class Route implements IContent {
+  private routeMap: Dict<Route> = {}
+  constructor(private navItem: IContent) {}
+
+  ContentLink = this.navItem.ContentLink
+  ParentLink = this.navItem.ParentLink
+  ContentType = this.navItem.ContentType
+  Name = this.navItem.Name
+  RelativePath = this.navItem.RelativePath
+  ExistingLanguages = this.navItem.ExistingLanguages
 
   get subRoutes() {
     return Object.values(this.routeMap)
@@ -17,7 +22,7 @@ export class Route implements IRoute {
 
   set parent(parent: Route | undefined) {
     if (parent) {
-      parent.routeMap[this.id] = this
+      parent.routeMap[this.ContentLink?.GuidValue ?? ''] = this
     }
   }
 }
@@ -27,17 +32,16 @@ export class RouteMap {
   home?: Route
   locales: Dict<string>
 
-  constructor(navItems: NavigationItem[]) {
+  constructor(navItems: IContent[]) {
     console.table(navItems, ["RelativePath", "ContentLink"])
     this.bindRouteMap(navItems, this.routeMap)
     this.bindSubRoutes(this.routeMap)
-    // console.table(this.routes, ["path", "contentType", "name"])
-    // console.log(this)
 
-    this.home = this.routes.find((route) => route.contentType === "HomePage")
+    this.home = this.routes.find((route) => getContentType(route?.ContentType as string[]) === "HomePage")
     this.locales = this.routes.reduce((acc, route) => {
-      route.language.forEach((language) => {
-        acc[language.Name] = language.DisplayName
+      route?.ExistingLanguages?.forEach((language) => {
+        const name: string = language?.Name as string
+        acc[name] = language?.DisplayName as string
       })
       return acc
     }, {} as Dict<string>)
@@ -48,20 +52,20 @@ export class RouteMap {
   }
 
   getRoute(path: string) {
-    return Object.values(this.routeMap).find((route) => route.path === path)
+    return Object.values(this.routeMap).find((route) => route.RelativePath === path)
   }
 
   private bindSubRoutes(routeMap: Dict<Route>) {
     Object.values(routeMap).forEach((route) => {
-      const parent = routeMap[route.parentId]
+      const parent = routeMap[route!.ParentLink!.GuidValue!]
       route.parent = parent
     })
   }
 
-  private bindRouteMap(navItems: NavigationItem[], routeMap: Dict<Route>) {
+  private bindRouteMap(navItems: IContent[], routeMap: Dict<Route>) {
     navItems.forEach((navItem) => {
       const route = new Route(navItem)
-      routeMap[route.id] = route
+      routeMap[route!.ContentLink!.GuidValue!] = route
     }, routeMap)
   }
 }

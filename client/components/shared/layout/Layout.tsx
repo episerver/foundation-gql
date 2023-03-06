@@ -1,4 +1,3 @@
-import { useQuery } from "@apollo/client"
 import { Center, Flex, Progress } from "@chakra-ui/react"
 import Head from "next/head"
 import { useEffect, useState } from "react"
@@ -9,32 +8,43 @@ import { Page } from "client/components/page"
 import { LayoutContext } from "client/components/shared/layout/Layout.Context"
 import { useRouter } from "client/hooks/optimizely/useRouter"
 import { RouteMap } from "client/routeMap"
-import LayoutQuery from "gql/LayoutQuery.gql"
-
-type LayoutQueryResult = {
-  Content: Items<NavigationItem> & Cursor & Total
-}
+import { Content, ContentLanguageModel, IContent, Locales, useLayoutQueryQuery } from "generated"
 
 export const Layout: React.FC = () => {
   const [loading, setLoading] = useState(false)
   const [routeMap, setRouteMap] = useState<RouteMap>()
   const { path, locale } = useRouter()
-  const { data, fetchMore } = useQuery<LayoutQueryResult>(LayoutQuery, {
+
+  const { data, fetchMore } = useLayoutQueryQuery({
     variables: {
-      locale,
-    },
-  })
+      locale: locale as Locales
+    }
+  }); 
 
   useEffect(() => {
-    if (data) {
-      const { items, total, cursor } = data.Content
+    if (data?.Content?.items && data?.Content?.total && data?.Content?.cursor) {
 
-      if (items.length < total) {
+      const cursor = data.Content.cursor
+      if (data.Content.items.length < data.Content.total) {
         fetchMore({
           variables: { cursor },
         })
       } else {
-        setRouteMap(new RouteMap(items))
+        let navigationItems: Array<IContent> = new Array<IContent>();
+        data.Content.items.map(x => {
+          const navigationItem: IContent = {
+            ContentLink: { GuidValue: x?.ContentLink?.GuidValue} ,
+            Name: x?.Name,
+            RouteSegment: x?.RouteSegment,
+            Url: x?.Url,
+            RelativePath: x?.RelativePath,
+            ContentType: x?.ContentType as string[],
+            ParentLink: { GuidValue: x?.ParentLink?.GuidValue },
+            ExistingLanguages: x?.ExistingLanguages as ContentLanguageModel[]
+          }
+          navigationItems.push(navigationItem)
+        })
+        setRouteMap(new RouteMap(navigationItems))
       }
     }
   }, [data, fetchMore])
@@ -49,7 +59,7 @@ export const Layout: React.FC = () => {
         }}
       >
         <Head>
-          <title>{route?.name}</title>
+          <title>{route?.Name}</title>
         </Head>
 
         <Navbar home={routeMap.home!} path={path} locales={routeMap.locales} />

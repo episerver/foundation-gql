@@ -8,4 +8,7 @@ fragment LocationItemFragment on LocationItemPage {
   Latitude
   IntroText: MainIntro
   RelativePath
+  Image {
+    Url
+  }
 }

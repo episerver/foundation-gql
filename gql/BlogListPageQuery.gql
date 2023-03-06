@@ -1,7 +1,7 @@
 #import "./fragments/ContentFragment.gql"
 
-query BlogListPageQuery($id: String) {
-  Content(where: { Ancestors: { eq: $id } }) {
+query BlogListPageQuery($locale: [Locales] = en $id: String) {
+  Content(locale: $locale, where: { Ancestors: { eq: $id } }) {
     items {
       ...ContentFragment
       ... on BlogListPage {

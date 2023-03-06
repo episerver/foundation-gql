@@ -12,7 +12,7 @@ import { cursorPagination } from "./cursorPagination"
 
 import possibleTypes from "possibleTypes.json"
 
-class OptiqClient extends ApolloClient<NormalizedCacheObject> {
+class ContentGraphClient extends ApolloClient<NormalizedCacheObject> {
   constructor(url?: string, auth?: string) {
     if (!url) throw new Error("url is required")
     if (!auth) throw new Error("auth is required")
@@ -54,7 +54,7 @@ class OptiqClient extends ApolloClient<NormalizedCacheObject> {
   }
 }
 
-export const optiqClient = new OptiqClient(
+export const contentGraphClient = new ContentGraphClient(
   process.env.NEXT_PUBLIC_OPTIQ_URL,
   process.env.NEXT_PUBLIC_OPTIQ_AUTH
 )

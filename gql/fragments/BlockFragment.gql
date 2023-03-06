@@ -33,4 +33,11 @@ fragment BlockFragment on IContent {
   ... on FormContainerBlock {
     Name
   }
+  
+  ... on HeroBlock {
+    BlockRatio
+    BackgroundImage {
+      Url
+    }
+  }
 }

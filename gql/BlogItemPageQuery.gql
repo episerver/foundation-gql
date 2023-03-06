@@ -1,7 +1,7 @@
 #import "./fragments/ContentFragment.gql"
 
-query BlogItemPageQuery($id: String) {
-  BlogItemPage(ids: [$id]) {
+query BlogItemPageQuery($locale: [Locales] = en $id: String) {
+  BlogItemPage(locale: $locale, ids: [$id]) {
     items {
       ...ContentFragment
       PageImage {

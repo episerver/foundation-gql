@@ -1,36 +1,39 @@
 import { Container } from "@chakra-ui/react"
 
-import { ContentList } from "client/components/shared/content/ContentList"
-import { useQuery } from "client/hooks/optimizely/useQuery"
+import { ContentList, ContentListItemProps } from "client/components/shared/content/ContentList"
 import { useRouter } from "client/hooks/optimizely/useRouter"
-import FolderPageQuery from "gql/FolderPageQuery.gql"
-
-type TagItem = Content & {
-  MainBody?: string
-}
-
-type FolderPageQueryResult = {
-  Content: Items<TagItem>
-}
+import { RouteProps } from "client/routeMap"
+import { Locales, useFolderPageQueryQuery } from "generated"
 
 export default function FolderPage({ route }: RouteProps) {
   const { locale } = useRouter()
-  const { data } = useQuery<FolderPageQueryResult>(FolderPageQuery, {
+
+  const { data } = useFolderPageQueryQuery({
     variables: {
-      locale,
-      ancestors: route?.id,
+      locale: locale as Locales,
+      ancestors: route!.ContentLink!.GuidValue!,
       limit: 20,
-    },
-  })
+    }
+  });
+
+  let contentListItems: ContentListItemProps[] = []
+  data?.Content?.items?.map((item) => {
+    const contentListItemProps: ContentListItemProps = {
+      Name: item?.Name ?? '',
+      RouteSegment: item?.RouteSegment ?? '',
+      Url: item?.Url ?? '',
+      RelativePath: item?.RelativePath ?? '',
+      ContentType: item?.ContentType as string[],
+      ContentLink: { GuidValue: item?.ContentLink?.GuidValue ?? '' } ,
+      Body: item?.__typename == "TagPage" ? item?.MainBody ?? '' : ''
+    }
+
+    contentListItems?.push(contentListItemProps)
+  });
 
   return (
     <Container maxW={"lg"} mt={10}>
-      <ContentList
-        data={data?.Content.items.map((item) => ({
-          ...item,
-          Body: item.MainBody,
-        }))}
-      />
+      <ContentList data={contentListItems}/>
     </Container>
   )
 }

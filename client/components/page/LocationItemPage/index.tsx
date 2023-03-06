@@ -1,21 +1,18 @@
 import { Box, Container, Divider, Heading, List, ListItem, Text } from "@chakra-ui/react"
-
 import { XHTMLContent } from "client/components/shared/content/XHTMLContent"
-
-import { useQuery } from "client/hooks/optimizely/useQuery"
-import LocationItemQuery from "gql/LocationItemQuery.gql"
-
-type LocationItemQueryResult = {
-  LocationItemPage: LocationItemPage
-}
+import { useRouter } from "client/hooks/optimizely/useRouter";
+import { RouteProps } from "client/routeMap";
+import { Locales, useLocationItemQueryQuery } from "generated"
 
 export default function LocationItemPage({ route }: RouteProps) {
-  const { data } = useQuery<LocationItemQueryResult>(LocationItemQuery, {
+  const { locale } = useRouter()
+  const { data } = useLocationItemQueryQuery({
     variables: {
-      id: route?.id,
-    },
-  })
-  const location = data?.LocationItemPage.items[0]
+      locale: locale as Locales,
+      id: route!.ContentLink!.GuidValue!
+    }
+  });
+  const location = data?.LocationItemPage?.items![0]
 
   return (
     (location && (
@@ -23,7 +20,7 @@ export default function LocationItemPage({ route }: RouteProps) {
         <Heading size={"2xl"} textAlign={"center"} my={10}>
           {location.Location}
         </Heading>
-        <XHTMLContent fontSize={"large"}>{location.MainBody}</XHTMLContent>
+        <XHTMLContent fontSize={"large"}>{location?.MainBody ?? ''}</XHTMLContent>
         <Divider my={5} />
 
         <Box>

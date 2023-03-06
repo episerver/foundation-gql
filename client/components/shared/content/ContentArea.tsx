@@ -1,10 +1,11 @@
 import { Flex, FlexProps } from "@chakra-ui/react"
+import { ContentAreaItemModel } from "generated"
 
-import { Block } from "../../block"
+import { Block, BlockComponent } from "../../block"
 
 type ContentAreaProps = {
   container?: FlexProps
-  data?: ContentAreaItem<Block>[]
+  data?: ContentAreaItemModel[]
 }
 
 export const ContentArea: React.FC<ContentAreaProps> = ({ container, data }) => {
@@ -12,11 +13,11 @@ export const ContentArea: React.FC<ContentAreaProps> = ({ container, data }) => 
     <Flex direction={"column"} {...container}>
       {data?.map(({ ContentLink }) => (
         <Flex
-          key={ContentLink.Expanded.ContentLink.GuidValue}
+          key={ContentLink?.Expanded?.ContentLink?.GuidValue}
           direction={"column"}
           align={"center"}
         >
-          <Block data={ContentLink.Expanded} />
+          <BlockComponent data={ContentLink?.Expanded as Block} />
         </Flex>
       ))}
     </Flex>
