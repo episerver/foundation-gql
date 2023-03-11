@@ -29954,8 +29954,8 @@ export type LocationItemQueryQuery = { __typename?: 'Query', LocationItemPage?: 
 export type LocationListQueryQueryVariables = Exact<{
   locale?: InputMaybe<Array<InputMaybe<Locales>> | InputMaybe<Locales>>;
   path?: InputMaybe<Scalars['String']>;
-  continents?: InputMaybe<Array<InputMaybe<Scalars['String']>> | InputMaybe<Scalars['String']>>;
-  countries?: InputMaybe<Array<InputMaybe<Scalars['String']>> | InputMaybe<Scalars['String']>>;
+  continents?: InputMaybe<Array<Scalars['String']> | Scalars['String']>;
+  countries?: InputMaybe<Array<Scalars['String']> | Scalars['String']>;
   minAvgTemp?: InputMaybe<Scalars['Float']>;
   maxAvgTemp?: InputMaybe<Scalars['Float']>;
   orderBy?: InputMaybe<LocationItemPageOrderByInput>;
@@ -30734,7 +30734,7 @@ export type LocationItemQueryQueryHookResult = ReturnType<typeof useLocationItem
 export type LocationItemQueryLazyQueryHookResult = ReturnType<typeof useLocationItemQueryLazyQuery>;
 export type LocationItemQueryQueryResult = Apollo.QueryResult<LocationItemQueryQuery, LocationItemQueryQueryVariables>;
 export const LocationListQueryDocument = gql`
-    query LocationListQuery($locale: [Locales] = [en], $path: String, $continents: [String], $countries: [String], $minAvgTemp: Float = 0, $maxAvgTemp: Float = 30, $orderBy: LocationItemPageOrderByInput, $searchTerm: String) {
+    query LocationListQuery($locale: [Locales] = [en], $path: String, $continents: [String!], $countries: [String!], $minAvgTemp: Float = 0, $maxAvgTemp: Float = 30, $orderBy: LocationItemPageOrderByInput, $searchTerm: String) {
   LocationListPage(locale: $locale, where: {RelativePath: {eq: $path}}) {
     items {
       Name
@@ -30743,7 +30743,7 @@ export const LocationListQueryDocument = gql`
       _children {
         LocationItemPage(
           limit: 100
-          where: {AvgTemp: {gte: $minAvgTemp, lte: $maxAvgTemp}, Country: {in: $countries}, Continent: {in: $continents}, _fulltext: {like: $searchTerm}}
+          where: {AvgTemp: {gte: $minAvgTemp, lte: $maxAvgTemp}, _fulltext: {like: $searchTerm}}
           orderBy: $orderBy
         ) {
           total
@@ -30751,11 +30751,11 @@ export const LocationListQueryDocument = gql`
             ...LocationItemFragment
           }
           facets {
-            Country(orderType: VALUE, orderBy: ASC, limit: 100) {
+            Country(orderType: COUNT, orderBy: DESC, limit: 100, filters: $countries) {
               name
               count
             }
-            Continent(orderType: VALUE, orderBy: ASC) {
+            Continent(orderType: COUNT, orderBy: DESC, filters: $continents) {
               name
               count
             }
