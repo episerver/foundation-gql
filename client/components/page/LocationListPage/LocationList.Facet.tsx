@@ -27,7 +27,7 @@ export const LocationListFacet: React.FC = () => {
           <Facet
             type="select"
             title="Country"
-            values={facets.Country as StringFacet[]}
+            values={facets.Country.filter(x => x?.count! > 0) as StringFacet[]}
             filters={filters?.countries as string[]}
             onChange={(countries: string[] | undefined) => {
               if(countries?.length != null && countries.length < 1) {
@@ -43,7 +43,7 @@ export const LocationListFacet: React.FC = () => {
           <Facet
             type="select"
             title="Continent"
-            values={facets.Continent as StringFacet[]}
+            values={facets.Continent.filter(x => x?.count! > 0) as StringFacet[]}
             filters={filters.continents as string[]}
             onChange={(continents: string[] | undefined) => {
               if(continents?.length != null && continents.length < 1) {
