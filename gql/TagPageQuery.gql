@@ -1,5 +1,5 @@
-query TagPageQuery($id: String) {
-  TagPage(ids: [$id]) {
+query TagPageQuery($locale: [Locales] = en $id: String) {
+  TagPage(locale: $locale, ids: [$id]) {
     items {
       Name
       MainIntro

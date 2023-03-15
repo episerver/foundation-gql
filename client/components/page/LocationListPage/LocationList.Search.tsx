@@ -16,7 +16,7 @@ export const LocationListSearch: React.FC<FlexProps> = (props) => {
   const {
     filters: [filters, setFilters],
   } = useContext(LocationListContext)
-  const [searchTerm, setSearchTerm] = useState("")
+  const [searchTerm, setSearchTerm] = useState((): string | undefined => undefined)
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {

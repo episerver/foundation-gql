@@ -3,24 +3,23 @@
 query LocationListQuery(
   $locale: [Locales] = [en]
   $path: String
-  $continents: [String] = []
-  $countries: [String] = []
+  $continents: [String!]
+  $countries: [String!]
   $minAvgTemp: Float = 0
   $maxAvgTemp: Float = 30
   $orderBy: LocationItemPageOrderByInput
-  $searchTerm: String = ""
+  $searchTerm: String
 ) {
   LocationListPage(locale: $locale, where: { RelativePath: { eq: $path } }) {
     items {
       Name
       MainBody
+      Url
       _children {
         LocationItemPage(
           limit: 100
           where: {
             AvgTemp: { gte: $minAvgTemp, lte: $maxAvgTemp }
-            Country: { in: $countries }
-            Continent: { in: $continents }
             _fulltext: { like: $searchTerm }
           }
           orderBy: $orderBy
@@ -30,11 +29,11 @@ query LocationListQuery(
             ...LocationItemFragment
           }
           facets {
-            Country(orderType: VALUE, orderBy: ASC, limit: 100) {
+            Country(orderType: COUNT, orderBy: DESC, limit: 100, filters: $countries) {
               name
               count
             }
-            Continent(orderType: VALUE, orderBy: ASC) {
+            Continent(orderType: COUNT, orderBy: DESC, filters: $continents) {
               name
               count
             }

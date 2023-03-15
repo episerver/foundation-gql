@@ -1,35 +1,26 @@
 import { VStack, Flex } from "@chakra-ui/react"
 
-import { Block } from "client/components/block"
-import { useQuery } from "client/hooks/optimizely/useQuery"
+import { Block, BlockComponent } from "client/components/block"
 import { useRouter } from "client/hooks/optimizely/useRouter"
-import HomePageQuery from "gql/HomePageQuery.gql"
-
-type HomePageItem = {
-  MainContentArea: ContentAreaItem<Block>[]
-}
-
-type HomePageQueryResult = {
-  HomePage: Items<HomePageItem>
-}
+import { Locales, useHomePageQueryQuery } from "generated"
 
 export default function HomePage() {
   const { locale } = useRouter()
-  const { data } = useQuery<HomePageQueryResult>(HomePageQuery, {
+  const { data } = useHomePageQueryQuery({
     variables: {
-      locale,
-    },
-  })
+      locale: locale as Locales,
+    }
+  });
 
   return (
     <VStack spacing={4} align="stretch">
-      {data?.HomePage.items[0].MainContentArea.map(({ ContentLink }) => (
+      {data?.HomePage?.items![0]?.MainContentArea?.map((item) => (
         <Flex
-          key={ContentLink.Expanded.ContentLink.GuidValue}
+          key={item?.ContentLink?.Expanded?.ContentLink?.GuidValue}
           direction={"column"}
           align={"center"}
         >
-          <Block data={ContentLink.Expanded} />
+          <BlockComponent data={item?.ContentLink?.Expanded as Block} />
         </Flex>
       ))}
     </VStack>

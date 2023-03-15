@@ -1,32 +1,36 @@
 import { Container } from "@chakra-ui/react"
-
-import { ContentList } from "client/components/shared/content/ContentList"
-import { useQuery } from "client/hooks/optimizely/useQuery"
-import BlogListPageQuery from "gql/BlogListPageQuery.gql"
-
-type BlogListPageItem = Content & {
-  MainBody: string
-}
-
-type BlogListPageQueryResult = {
-  Content: Items<BlogListPageItem>
-}
+import { ContentList, ContentListItemProps, ContentListProps } from "client/components/shared/content/ContentList"
+import { useRouter } from "client/hooks/optimizely/useRouter";
+import { RouteProps } from "client/routeMap";
+import { Locales, useBlogListPageQueryQuery } from "generated"
 
 export default function BlogListPage({ route }: RouteProps) {
-  const { data } = useQuery<BlogListPageQueryResult>(BlogListPageQuery, {
+  const { locale } = useRouter()
+  const { data } = useBlogListPageQueryQuery({
     variables: {
-      id: route?.id,
-    },
-  })
+      locale: locale as Locales,
+      id: route!.ContentLink!.GuidValue!
+    }
+  });
+
+  let contentListItems: ContentListItemProps[] = []
+  data?.Content?.items?.map((item) => {
+    const contentListItemProps: ContentListItemProps = {
+      Name: item?.Name ?? '',
+      RouteSegment: item?.RouteSegment ?? '',
+      Url: item?.Url ?? '',
+      RelativePath: item?.RelativePath ?? '',
+      ContentType: item?.ContentType as string[],
+      ContentLink: { GuidValue: item?.ContentLink?.GuidValue ?? '' } ,
+      Body: item?.__typename == "BlogListPage" ? item?.MainBody ?? '' : ''
+    }
+
+    contentListItems?.push(contentListItemProps)
+  });
 
   return (
     <Container maxW={"lg"} mt={10}>
-      <ContentList
-        data={data?.Content.items.map((item) => ({
-          ...item,
-          Body: item.MainBody,
-        }))}
-      />
+      <ContentList data={contentListItems} />
     </Container>
   )
 }

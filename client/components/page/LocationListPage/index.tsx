@@ -7,29 +7,31 @@ import { LocationListFacet } from "./LocationList.Facet"
 import { LocationListFilter } from "./LocationList.Filter"
 import { LocationListHeader } from "./LocationList.Header"
 
-import { useQuery } from "client/hooks/optimizely/useQuery"
 import { useRouter } from "client/hooks/optimizely/useRouter"
-import LocationListQuery from "gql/LocationListQuery.gql"
+import { Locales, LocationListQueryQuery, LocationListQueryQueryVariables, useLocationListQueryQuery } from "generated"
 
-type LocationListQueryResult = {
-  LocationListPage: LocationListPage
-}
 
 export default function LocationListPage() {
   const { path, locale } = useRouter()
-  const [result, setResult] = useState<LocationItemResult>()
-  const [filters, setFilters] = useState<Partial<LocationFilter>>({})
-  const { data } = useQuery<LocationListQueryResult>(LocationListQuery, {
+  const [result, setResult] = useState<LocationListQueryQuery>()
+  const [filters, setFilters] = useState<Partial<LocationListQueryQueryVariables>>({})
+
+  const {data} = useLocationListQueryQuery({
     variables: {
-      ...filters,
-      path,
-      locale,
-    },
-  })
+      continents: filters.continents,
+      countries: filters.countries,
+      minAvgTemp: filters.minAvgTemp,
+      maxAvgTemp: filters.maxAvgTemp,
+      orderBy: filters.orderBy,
+      searchTerm: filters.searchTerm,
+      path: path,
+      locale: locale as Locales,
+    }
+  });
 
   useEffect(() => {
     if (data) {
-      setResult(data?.LocationListPage.items[0]._children.LocationItemPage)
+      setResult(data)
     }
   }, [data])
 

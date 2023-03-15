@@ -1,7 +1,7 @@
 #import "./fragments/LocationItemFragment.gql"
 
-query LocationItemQuery($id: String) {
-  LocationItemPage(ids: [$id]) {
+query LocationItemQuery($locale: [Locales] = en $id: String) {
+  LocationItemPage(locale: $locale, ids: [$id]) {
     items {
       ...LocationItemFragment
       MainBody

@@ -20,10 +20,11 @@ import {
   Tooltip,
 } from "@chakra-ui/react"
 import { useEffect, useState } from "react"
+import { StringFacet } from "generated"
 
 type BaseFacetProps = {
   title: string
-  values: Bucket[]
+  values: StringFacet[]
 }
 
 type SelectFacetProps = BaseFacetProps & {
@@ -47,7 +48,7 @@ const SelectFacet: React.FC<SelectFacetProps> = ({ filters, onChange, values }) 
     <CheckboxGroup onChange={onChange} value={filters}>
       <Stack spacing={4}>
         {values.map((val) => (
-          <Checkbox key={val.name} value={val.name} size={"sm"} spacing="1rem">
+          <Checkbox key={val.name} value={val?.name ?? ''} size={"sm"} spacing="1rem">
             <Flex direction={"row"}>
               <Text fontSize={"sm"}>{val.name}</Text>
               <Spacer />
@@ -75,7 +76,7 @@ const RangeFacet: React.FC<RangeFacetProps> = ({
     setMaxVal(parseInt(`${maxFilter || max || "0"}`))
   }, [minFilter, maxFilter, min, max])
 
-  const maxBucketVal = 40 / Math.max(...values.map((b) => b.count))
+  const maxBucketVal = 40 / Math.max(...values.map((b) => b.count!))
 
   return (
     <VStack>
@@ -83,7 +84,7 @@ const RangeFacet: React.FC<RangeFacetProps> = ({
         <HStack justify={"space-between"} align={"flex-end"} w={"full"} pl={3}>
           {values.map((val) => (
             <Tooltip key={val.name} hasArrow label={val.count} bg="orange.500" placement="top">
-              <Box bg="orange.100" w={100} h={`${val.count * maxBucketVal}px`} />
+              <Box bg="orange.100" w={100} h={`${val.count! * maxBucketVal}px`} />
             </Tooltip>
           ))}
         </HStack>

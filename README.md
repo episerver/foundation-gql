@@ -42,6 +42,13 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ---
 
+### Generate types from GraphQL queries
+codegen.yml has been configured to create types and apollo query hooks from GraphQL queries located in the 'gql' folder. Run 'yarn generate' to recreate the types and apollo query hooks. The types and queries will be created in 'generated.ts'
+
+```sh
+  yarn generate
+```
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

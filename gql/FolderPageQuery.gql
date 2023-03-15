@@ -1,7 +1,8 @@
 #import "./fragments/ContentFragment.gql"
 
-query FolderPageQuery($ancestors: String, $limit: Int = 6) {
+query FolderPageQuery($locale: [Locales] = en $ancestors: String, $limit: Int = 6) {
   Content(
+    locale: $locale, 
     where: { Ancestors: { eq: $ancestors } }
     orderBy: { StartPublish: DESC }
     limit: $limit

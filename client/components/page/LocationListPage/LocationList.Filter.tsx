@@ -24,16 +24,18 @@ export const LocationListFilter: React.FC = () => {
   } = useContext(LocationListContext)
 
   const { searchTerm, ...filters } = ctxFilters || {}
+  const continents = filters?.continents as string[]
+  const countries = filters?.countries as string[]
 
   return Object.keys(filters).length ? (
     <Wrap alignSelf={"start"} gap={3} px={5} pt={3}>
-      {filters.continents?.map((val, index) => (
+      {continents?.map((val, index) => (
         <FilterTag
           key={index}
           display={val}
           onRemove={() => {
             const { continents: oldContinents, ...newFilters } = filters
-            const continents = oldContinents?.filter((x) => x !== val)
+            const continents = (oldContinents as string[])?.filter((x) => x !== val)
             setFilters({
               ...newFilters,
               ...(continents?.length ? { continents } : undefined),
@@ -42,13 +44,13 @@ export const LocationListFilter: React.FC = () => {
         />
       ))}
 
-      {filters.countries?.map((val, index) => (
+      {countries?.map((val, index) => (
         <FilterTag
           key={index}
           display={val}
           onRemove={() => {
             const { countries: oldCountries, ...newFilters } = filters
-            const countries = oldCountries?.filter((x) => x !== val)
+            const countries = (oldCountries as string[])?.filter((x) => x !== val)
             setFilters({
               ...newFilters,
               ...(countries?.length ? { countries } : undefined),

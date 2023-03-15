@@ -7,7 +7,7 @@ type LocaleSelectorProps = {
 }
 
 export const LocaleSelector: React.FC<LocaleSelectorProps> = ({ locales }) => {
-  const { router, getPath, locale } = useRouter()
+  const { router, getPath } = useRouter()
 
   const onLocaleChange = (index: number) => {
     const locale = Object.keys(locales)[index]

@@ -8,15 +8,16 @@ import {
   Flex,
   FlexProps,
 } from "@chakra-ui/react"
+import { LocationItemPageOrderByInput, OrderBy } from "generated"
 import { useContext, useEffect, useState } from "react"
 import { CgSortAz } from "react-icons/cg"
 
 import { LocationListContext } from "./LocationList.Context"
 
-const sortMap: Record<string, Partial<LocationSort>> = {
-  cityName: { Name: "ASC" },
-  highTemp: { AvgTemp: "DESC" },
-  lowTemp: { AvgTemp: "ASC" },
+const sortMap: Record<string, Partial<LocationItemPageOrderByInput>> = {
+  cityName: { Name: OrderBy.Asc },
+  highTemp: { AvgTemp: OrderBy.Desc },
+  lowTemp: { AvgTemp: OrderBy.Asc },
 }
 
 export const LocationListSort: React.FC<FlexProps> = (props) => {

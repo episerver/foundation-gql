@@ -1,8 +1,8 @@
 #import "./fragments/ContentFragment.gql"
 #import "./fragments/BlockFragment.gql"
 
-query LandingPageQuery($id: String) {
-  LandingPage(ids: [$id]) {
+query LandingPageQuery($locale: [Locales] = en $id: String) {
+  LandingPage(locale: $locale, ids: [$id]) {
     items {
       TopContentArea {
         ContentLink {
@@ -17,6 +17,9 @@ query LandingPageQuery($id: String) {
           Expanded {
             ...ContentFragment
             ...BlockFragment
+            ... on ContainerBlock {
+              ...ContainerBlockFragment
+            }
           }
         }
       }

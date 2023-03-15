@@ -4,9 +4,8 @@ import { Ref, useCallback, useEffect, useState } from "react"
 
 import { SearchResultItem } from "./SearchResult.Item"
 
-import { useQuery } from "client/hooks/optimizely/useQuery"
 import { useRouter } from "client/hooks/optimizely/useRouter"
-import SearchQuery from "gql/SearchQuery.gql"
+import { IContent, Locales, useSearchQueryQuery } from "generated"
 
 type SearchResult = {
   name: string
@@ -16,8 +15,16 @@ type SearchResult = {
   href: string
 }
 
+type Items<T> = {
+  items: T[]
+}
+
+type FullText = {
+  _fulltext: string[]
+}
+
 type SearchQueryResult = {
-  Content: Items<Content & FullText & Language>
+  Content: Items<IContent & FullText>
 }
 
 export const SearchResultContainer: React.FC = () => {
@@ -25,11 +32,14 @@ export const SearchResultContainer: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("")
   const [text, setText] = useState("")
   const [result, setResult] = useState<SearchResult[]>([])
-  const { router } = useRouter()
-  const { data } = useQuery<SearchQueryResult>(SearchQuery, {
-    variables: { text: text && `%${text}%` },
-    skip: !text,
-  })
+  const { router, locale } = useRouter()
+
+  const { data } = useSearchQueryQuery({
+    variables: {
+      locale: locale as Locales,
+      text: text // && `%${text}%`
+    }
+  });
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => setText(searchTerm), 300)
@@ -46,7 +56,7 @@ export const SearchResultContainer: React.FC = () => {
     (event: KeyboardEvent) => {
       if (event.key === "ArrowUp") setNewSelectedIndex(selectedIndex - 1)
       if (event.key === "ArrowDown") setNewSelectedIndex(selectedIndex + 1)
-      if (event.key === "Enter") router.push(result[selectedIndex].href)
+      //if (event.key === "Enter") router.push(result[selectedIndex]?.href)
     },
     [result, router, selectedIndex, setNewSelectedIndex]
   )
@@ -55,15 +65,15 @@ export const SearchResultContainer: React.FC = () => {
     const result = (data?.Content.items || []).reduce(
       (acc, item) => [
         ...acc,
-        ...item._fulltext
-          .filter((x) => x.toLowerCase().includes(query.toLowerCase()))
+        ...item._fulltext!
+          .filter((x) => x?.toLowerCase().includes(query.toLowerCase()))
           .map(
             (text) =>
               ({
                 text: text,
                 name: item.Name,
                 contentTypes: item.ContentType,
-                language: item.Language.Name,
+                language: item?.Language?.Name,
                 href: item.RelativePath || "#",
               } as SearchResult)
           ),
@@ -85,7 +95,7 @@ export const SearchResultContainer: React.FC = () => {
   }, [handleKeyPress])
 
   useEffect(() => {
-    setSearchResult(data, text)
+    setSearchResult(data as SearchQueryResult, text)
   }, [data, setSearchResult, text])
 
   return (

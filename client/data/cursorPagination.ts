@@ -1,6 +1,6 @@
 import { FieldPolicy } from "@apollo/client"
 
-export function cursorPagination<T, C extends Cursor & Total & Items<T>>(): FieldPolicy {
+export function cursorPagination<T, C extends { items: T[], cursor: string, total: number }>(): FieldPolicy {
   return {
     keyArgs: ["where", "orderBy"],
     merge(existing: C | undefined, incoming: C) {
